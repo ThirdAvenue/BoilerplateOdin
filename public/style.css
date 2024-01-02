@@ -1,0 +1,64 @@
+
+
+body {
+    overflow: hidden;
+    margin: 0px;
+}
+.canvasWindow {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    margin: 0px;
+}
+.inputField {
+    position: absolute;
+    bottom: 25px;
+    left: 25px;
+}
+.topRightRectangle {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100px;  /* Adjust width as needed */
+    height: 50px;  /* Adjust height as needed */
+    background-color: black;
+    z-index: 10;  /* Ensures it stays on top */
+}
+.configWidgetLeft{ 
+    position: absolute;
+    top: 80px;
+    left: 80px;
+	box-shadow:8px 8px 10px rgba(0, 0, 0, 0.10000000149011612);
+	background-color:rgba(244.3749949336052, 244.3749949336052, 244.3749949336052, 1);
+	width:380px;
+	height:700px;
+	border-top-left-radius:14px;
+	border-top-right-radius:14px;
+	border-bottom-left-radius:14px;
+	border-bottom-right-radius:14px;
+}
+.topTitle { 
+	color:rgba(0, 0, 0, 1);
+	width:267px;
+	height:26px;
+	position:absolute;
+	left:50px;
+	top:30px;
+	font-family:Roboto;
+	text-align:left;
+	font-size:22px;
+	letter-spacing:0;
+}
+.explainerText1 { 
+	color:rgba(0, 0, 0, 1);
+	width:267px;
+	height:56px;
+	position:absolute;
+	left:50px;
+	top:72px;
+	font-family:Roboto;
+	text-align:left;
+	font-size:12px;
+	letter-spacing:0;
+}
