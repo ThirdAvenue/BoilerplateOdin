@@ -15,7 +15,7 @@ export type product = model & {
 const demoProduct: product = {
     id: uuidv4(),
     version: 1.0,
-    model: 'CurtainsExample',
+    model: 'CoverChair',
     rotation:0,
     position:{x:0,y:0,z:0}
       
