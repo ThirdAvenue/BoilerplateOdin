@@ -2,6 +2,7 @@ import { BufferGeometry, Mesh, Object3D } from 'three';
 import { LoadMesh, MeshInfo } from './LoadMesh';
 import { MeshData } from './MeshData';
 
+
 export interface InputData {
   meshInfos: MeshInfo[];
   identifier: string;
@@ -18,7 +19,7 @@ export class MeshLibrary {
     return await Promise.all(
       event.data.meshInfos.map(async (target: MeshInfo) => {
         await LoadMesh.GLTF(target).then((gltf) => {
-          const geomArray: BufferGeometry[] = [];
+          /* const geomArray: BufferGeometry[] = [];
           gltf.traverse((o: Object3D) => {
             if (o.type === 'Mesh') {
               geomArray.push((o as Mesh).geometry);
@@ -31,7 +32,7 @@ export class MeshLibrary {
             UUID: gltf.id,
             geometry: geomArray,
           };
-          MeshLibrary.meshes.push(meshData);
+          MeshLibrary.meshes.push(meshData); */
         });
       }),
     ).then((_) => {

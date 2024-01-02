@@ -1,5 +1,7 @@
 import { LoadingManager } from 'three';
 import { GLTF, GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import { getStorage, ref, getDownloadURL } from "firebase/storage";
+import { ImmersiveConfigurator } from '../../ImmersiveConfigurator';
 
 export interface MeshInfo {
   url: string;
@@ -10,9 +12,22 @@ export class LoadMesh {
   static nrloadedsuccesfully = 0;
 
   public static async GLTF(data: MeshInfo, manager?: LoadingManager) {
-    return new GLTFLoader(manager)
+
+    getDownloadURL(ref(ImmersiveConfigurator.instance.firebaseStorage, 'Cover_Chair/cover_chair.glb')).then((url) => {
+      console.log(url)
+      const xhr = new XMLHttpRequest();
+      xhr.responseType = 'blob';
+      xhr.onload = (event) => {
+        const blob = xhr.response;
+      };
+      xhr.open('GET', url);
+      xhr.send();
+    })
+
+
+    /* return new GLTFLoader(manager)
       .loadAsync(data.url, (p) => this.progress(p))
-      .then((gltf) => this.loadResolve(gltf, data));
+      .then((gltf) => this.loadResolve(gltf, data)); */
   }
 
   private static progress(xhr: ProgressEvent<EventTarget>) {

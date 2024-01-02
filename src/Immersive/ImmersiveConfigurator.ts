@@ -6,6 +6,7 @@ import { MeshInfo } from './Libraries/ModelLibrary/LoadMesh'
 import { apiCall } from './Utils/API'
 import { FirebaseApp, initializeApp } from 'firebase/app';
 import { getDatabase, onValue, ref, set } from "firebase/database";
+import { FirebaseStorage, getStorage } from "firebase/storage";
 import { product } from '../product/productX'
 
 export class ImmersiveConfigurator {
@@ -21,6 +22,7 @@ export class ImmersiveConfigurator {
     public canvas!: HTMLDivElement
     public showWireFrame: boolean = true
     public firebaseapp!: FirebaseApp
+    public firebaseStorage!: FirebaseStorage
     private _eventDispatcher!: EventDispatcher
     private _product: any
 
@@ -48,12 +50,13 @@ export class ImmersiveConfigurator {
     ): Promise<void> {
 
         const firebaseConfig = {
-            databaseURL: 'https://barcos3-e67c4-default-rtdb.europe-west1.firebasedatabase.app/'
+            databaseURL: 'https://boilerplate3d-default-rtdb.europe-west1.firebasedatabase.app/',
+            storageBucket:'gs://boilerplate3d.appspot.com'
         };
 
         this.firebaseapp = initializeApp(firebaseConfig);
         const database = getDatabase(this.firebaseapp);
-
+        this.firebaseStorage= getStorage(this.firebaseapp)
         onValue(ref(database, 'slots/'), (snapshot) => { this.modelUpdate(snapshot.val()) })
 
 
