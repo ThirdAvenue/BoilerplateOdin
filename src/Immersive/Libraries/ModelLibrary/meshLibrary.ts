@@ -19,20 +19,22 @@ export class MeshLibrary {
     return await Promise.all(
       event.data.meshInfos.map(async (target: MeshInfo) => {
         await LoadMesh.GLTF(target).then((gltf) => {
-          /* const geomArray: BufferGeometry[] = [];
+          const geomArray: BufferGeometry[] = [];
           gltf.traverse((o: Object3D) => {
             if (o.type === 'Mesh') {
+              console.log(o.name)
               geomArray.push((o as Mesh).geometry);
+              geomArray[geomArray.length - 1].name = o.name;
+
             }
           });
           const meshData: MeshData = {
-            url: target.url,
             group: gltf,
             name: target.name,
             UUID: gltf.id,
             geometry: geomArray,
           };
-          MeshLibrary.meshes.push(meshData); */
+          MeshLibrary.meshes.push(meshData);
         });
       }),
     ).then((_) => {

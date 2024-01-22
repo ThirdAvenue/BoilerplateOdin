@@ -1,28 +1,81 @@
-import { AbstractProductAssembler, MaterialLibrary, MeshLibrary, model } from '../../Immersive'
+import { LinearSRGBColorSpace, Mesh, MeshStandardMaterial, RepeatWrapping, SRGBColorSpace, TextureLoader, sRGBEncoding } from 'three'
+import { AbstractProductAssembler, MaterialLibrary, MeshLibrary, OdinConfigurator, model } from '../../Immersive'
 import { productMesh } from '../Elements/productMesh'
 import { product } from '../productX'
+import { getDownloadURL, ref } from 'firebase/storage'
+import test from 'node:test'
 
 export class ModuleProductAssembler extends AbstractProductAssembler {
 
     public async generateProduct(product: product): Promise<void> {
-        //Build the parts, this can be done in a seperate "Buildstrategy but for this demo it is done right here in the assembler"
+        let downloadUrl = ""
+        await getDownloadURL(ref(OdinConfigurator.instance.firebaseStorage, `${OdinConfigurator.instance.firebasePath}${product.model}_Parts.json`)).then((url) => {
+            downloadUrl = url;
+        })
         await this.buildProduct(product)
-
+        await this.setMaterial(downloadUrl, product)
     }
     public async updateProduct(product: product): Promise<void> {
-        //clear the object (if you have granual controll: add this)
+        debugger
         this.object.clear()
         await this.buildProduct(product)
     }
 
     private async buildProduct(product: product): Promise<void> {
-
         const material = await MaterialLibrary.get('AluminiumMaterial1')
         const meshData = await MeshLibrary.get(product.model)
-
         if (material && meshData) {
-            const mesh = new productMesh(meshData, material, product.rotation,)
-            this.object.add(mesh)
+            for (let i = 0; i < meshData.geometry.length; i++) {
+                const mesh = new productMesh(meshData, material, product.rotation, i)
+                this.object.add(mesh)
+            }
+        }
+    }
+    private async setMaterial(url: string, product: product) {
+        //load json from url and create model 
+        const response = await fetch(url);
+        const data = await response.json();
+        for (const model of this.object.children) {
+            if (model instanceof Mesh) {
+                //find woodwork in data get the index in data 
+                const materialName = data.find((material: { model: string }) => material.model === model.name)?.material;
+                console.log(materialName)
+                if (materialName == undefined) {debugger}
+                const material = await MaterialLibrary.get(materialName)
+                const textureMap = data.find((material: { model: string }) => material.model === model.name)?.texture;
+                //get the material from the material library
+                if (textureMap && textureMap != "None") {
+                    let diffuseUrl = ""
+                    let bumpUrl = ""
+                    await getDownloadURL(ref(OdinConfigurator.instance.firebaseStorage, `${OdinConfigurator.instance.firebasePath}${product.model}_${textureMap}_d.jpg`)).then((url) => {
+                        diffuseUrl = url;
+                    })
+                    await getDownloadURL(ref(OdinConfigurator.instance.firebaseStorage, `${OdinConfigurator.instance.firebasePath}${product.model}_${textureMap}_d.jpg`)).then((url) => {
+                        bumpUrl = url;
+                    })
+                    const texture = new TextureLoader().load(diffuseUrl)
+                    const bumptexture = new TextureLoader().load(bumpUrl)
+                    if (texture && material) {
+                        material.map = texture
+                        material.bumpMap = bumptexture
+
+                        material.bumpMap.repeat.x = 1;
+                        material.map.repeat.x = 1;
+                        material.bumpMap.wrapS = RepeatWrapping;
+                        material.map.wrapS = RepeatWrapping;
+                        material.bumpMap.repeat.y = 1;
+                        material.map.repeat.y = 1;
+                        material.bumpMap.wrapT = RepeatWrapping;
+                        material.map.wrapT = RepeatWrapping;
+                        material.needsUpdate = true
+
+
+                    }
+                    if (model.name==="Wires")console.log(material)
+                }
+                model.material = material
+
+            }
         }
 
     }

@@ -9,9 +9,12 @@ import { color2 } from './Materials/ColorMaterial2'
 import { color3 } from './Materials/ColorMaterial3'
 import { AluminiumMaterial1 } from './Materials/AluminiumMaterial1'
 import { AluminiumMaterial2 } from './Materials/AluminiumMaterial2'
-import { AluminiumMaterial3 } from './Materials/AluminiumMaterial3'
+import { Wood } from './Materials/Wood'
 import { FrostedGlassMaterial } from './Materials/FrostedGlassMaterial'
 import { GlassMaterial } from './Materials/GlassMaterial'
+import { Fabric1 } from './Materials/Fabric1'
+import { Wire } from './Materials/wire'
+import { BlackPlastic } from './Materials/BlackPlastic'
 
 export class MaterialLibrary {
     public static materials: Map<string, Material> = new Map()
@@ -22,7 +25,10 @@ export class MaterialLibrary {
         XRayMaterial: XRayMaterial,
         AluminiumMaterial1: AluminiumMaterial1,
         AluminiumMaterial2: AluminiumMaterial2,
-        AluminiumMaterial3: AluminiumMaterial3,
+        Wood: Wood,
+        Fabric1:Fabric1,
+        Wire:Wire,
+        BlackPlastic: BlackPlastic,
         FrostedGlassMaterial: FrostedGlassMaterial,
         GlassMaterial: GlassMaterial,
     }

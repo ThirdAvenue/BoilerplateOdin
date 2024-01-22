@@ -8,7 +8,9 @@ import {
     Object3D,
     Scene,
     ShadowMaterial,
+    TextureLoader,
 } from 'three'
+import { OdinConfigurator } from '..'
 
 export type layer = 'Scene' | 'Product'
 
@@ -17,8 +19,8 @@ export class MainScene extends Scene {
     public product: Group
     private uiElements: Group
     private dimensionElements: Group
-    private sunLight!: DirectionalLight
-    private hemisphericLight!: HemisphereLight
+    public sunLight!: DirectionalLight
+    public hemisphericLight!: HemisphereLight
     constructor() {
         super()
         this.scenery = new Group()
@@ -39,8 +41,7 @@ export class MainScene extends Scene {
         this.scenery.add(object)
     }
     public addProduct(object: Object3D) {
-        console.log(object)
-        this.add(object)
+        this.product.add(object)
     }
     public addUIElement(object: Object3D) {
         this.uiElements.add(object)
@@ -49,8 +50,8 @@ export class MainScene extends Scene {
         this.dimensionElements.add(object)
     }
     private setupScene() {
-        this.hemisphericLight = new HemisphereLight(0xfffdf2, 0xfffdf2, 1)
-        this.sunLight = new DirectionalLight('#fffdf2', 10)
+        this.hemisphericLight = new HemisphereLight(0xfffdf2, 0xfffdf2, 0.15)
+        this.sunLight = new DirectionalLight('#fffdf2', 0.5)
         this.sunLight.position.set(10, 10, 10)
         this.sunLight.target.position.set(0, 0, 0)
         this.sunLight.shadow.radius = 5
@@ -59,6 +60,9 @@ export class MainScene extends Scene {
         this.sunLight.shadow.normalBias = 0.1
         this.sunLight.shadow.mapSize.width = 4096
         this.sunLight.shadow.mapSize.height = 4096
+
+        this.sunLight.layers.enable(1)
+        this.hemisphericLight.layers.enable(1)
 
         this.sunLight.layers.enable(1)
         this.sunLight.layers.enable(2)
@@ -70,11 +74,17 @@ export class MainScene extends Scene {
 
         this.sunLight.target.position.set(-2, 0, 1.5)
 
-        const floor= new Mesh(new BoxGeometry(100,0.1,100),new ShadowMaterial({color:0xffffff}))
-        floor.position.y=-0.05
-        floor.receiveShadow=true
-        this.scenery.add(this.hemisphericLight, this.sunLight,floor)
+        const floor = new Mesh(new BoxGeometry(100, 0.1, 100), new ShadowMaterial({ color: 0xffffff }))
+        floor.position.y = -0.05
+        floor.receiveShadow = true
+        this.scenery.add(this.hemisphericLight, this.sunLight, floor)
+/*         const backgroundImage = new TextureLoader()
+        backgroundImage.load('Assets/BackGround1.jpg', function (texture) {
+            texture.
+
+        })
+ */
     }
-    
+
 
 }

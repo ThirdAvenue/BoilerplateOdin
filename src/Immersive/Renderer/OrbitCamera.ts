@@ -31,6 +31,7 @@ export class OrbitCamera extends PerspectiveCamera {
     }
 
     private init() {
+        
         this.controls.enableDamping = true
         this.controls.dampingFactor = 0.1
         this.controls.maxDistance = 11
@@ -66,7 +67,7 @@ export class OrbitCamera extends PerspectiveCamera {
     }
 
     public goToOrigin(duration: number) {
-        this.snapto(new Vector3(2, 1.2, 3), new Vector3(0, 1, 0))
+        this.snapto(new Vector3(0, 0.5, 1.6), new Vector3(0, 0.6, 0))
     }
 
     public moveTarget(endPosition: Vector3, target: Vector3, duration: number) {
@@ -99,20 +100,6 @@ export class OrbitCamera extends PerspectiveCamera {
         this.position.set(snapToPos.x * -1, snapToPos.y, snapToPos.z)
         if (lookat) this.controls.target.set(lookat.x * -1, lookat.y, lookat.z)
         this.controls.update()
-    }
-    public moveCameraForArea(axis: Axis, translate: number) {
-        if (axis == 'x') {
-            this.position.set(this.position.x - translate, this.position.y, this.position.z)
-            this.controls.target.set(
-                this.controls.target.x + translate * -1,
-                1,
-                this.controls.target.z
-            )
-        }
-        if (axis == 'z') {
-            this.position.set(this.position.x, this.position.y, this.position.z + translate)
-            this.controls.target.set(this.controls.target.x, 1, this.controls.target.z + translate)
-        }
     }
 
     public zoomIn() {

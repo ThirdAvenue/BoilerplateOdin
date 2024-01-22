@@ -18,11 +18,14 @@ export class MaterialFactory {
     if (data.textures) {
       const textures = await TextureLoader.loadTextures(data.textures);
       Object.entries(textures).forEach((obj) => {
-        obj[1].repeat.x = data.size.width;
-        obj[1].wrapS = RepeatWrapping;
-        obj[1].repeat.y = data.size.height;
-        obj[1].wrapT = RepeatWrapping;
-        obj[1].encoding = sRGBEncoding;
+        //never repeat aoMap
+        if (obj[0]!= "aoMap"){
+          obj[1].repeat.x = data.size.width;
+          obj[1].wrapS = RepeatWrapping;
+          obj[1].repeat.y = data.size.height;
+          obj[1].wrapT = RepeatWrapping;
+        }
+        
       });
 
       const material = new MeshPhysicalMaterial({ ...data.properties, ...textures });

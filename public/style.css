@@ -5,16 +5,41 @@ body {
     margin: 0px;
 }
 .canvasWindow {
+
     position: relative;
     width: 100vw;
-    height: 100vh;
+	height: 100vh;
+
+}
+
+/* canvaswindow for integration 
+.canvasWindow {
+
+    position: relative;
+	top:-50px;
+    width: 100vw;
+    aspect-ratio: 10/8;
     overflow: hidden;
     margin: 0px;
-}
+	background-image: url('https://firebasestorage.googleapis.com/v0/b/boilerplate3d.appspot.com/o/Vadain%2FBackGround1.jpg?alt=media&token=ca43a913-7c2a-4a97-a122-59b616704622');
+	background-position: center;
+	background-repeat: no-repeat;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+} */
 .inputField {
     position: absolute;
     bottom: 25px;
     left: 25px;
+}
+.logo {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	width: 75px;
+	height: 75px;
 }
 .topRightRectangle {
     position: absolute;

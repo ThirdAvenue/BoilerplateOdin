@@ -1,20 +1,23 @@
+import { DoubleSide } from 'three';
 import { MaterialData } from '../MaterialData';
 
 export const color1: MaterialData = {
   name: 'Color1',
   type: 'MeshPhysicalMaterial',
   size: {
-    width: 10,
-    height: 10,
+    width: 1,
+    height: 1,
   },
   textures: {
-    // map: '',
-    // alphaMap: '',
-    // aoMap:'',
+     //map: '../Assets/1ESSE02011.jpg',
+     //alphaMap: '../Assets/Alpha_Test.jpg',
+     //aoMap:'../Assets/CurtainAO.jpg'
     // normalMap:''
   },
   properties: {
-    color: 0x000000,
+    color: 0xffffff,
+    side: DoubleSide,
+    transparent: true,
   },
 };
 

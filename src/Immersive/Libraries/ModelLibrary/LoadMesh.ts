@@ -1,33 +1,26 @@
 import { LoadingManager } from 'three';
 import { GLTF, GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
-import { ImmersiveConfigurator } from '../../ImmersiveConfigurator';
+import { OdinConfigurator } from '../../OdinConfigurator';
 
 export interface MeshInfo {
-  url: string;
+  company: string;
   name: string;
   scale?: number;
 }
 export class LoadMesh {
   static nrloadedsuccesfully = 0;
 
-  public static async GLTF(data: MeshInfo, manager?: LoadingManager) {
-
-    getDownloadURL(ref(ImmersiveConfigurator.instance.firebaseStorage, 'Cover_Chair/cover_chair.glb')).then((url) => {
-      console.log(url)
-      const xhr = new XMLHttpRequest();
-      xhr.responseType = 'blob';
-      xhr.onload = (event) => {
-        const blob = xhr.response;
-      };
-      xhr.open('GET', url);
-      xhr.send();
+  public static async GLTF(data: MeshInfo) {
+    let downloadUrl="";
+    const path = `${OdinConfigurator.instance.firebasePath}${data.name}.glb`;
+    await getDownloadURL(ref(OdinConfigurator.instance.firebaseStorage, path)).then((url) => {
+      downloadUrl = url;
     })
-
-
-    /* return new GLTFLoader(manager)
-      .loadAsync(data.url, (p) => this.progress(p))
-      .then((gltf) => this.loadResolve(gltf, data)); */
+    .catch((error) => { console.log(error) });
+    return new GLTFLoader()
+      .loadAsync(downloadUrl, (p) => this.progress(p))
+      .then((gltf) => this.loadResolve(gltf, data));
   }
 
   private static progress(xhr: ProgressEvent<EventTarget>) {

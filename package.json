@@ -10,12 +10,13 @@
   "author": "Renson",
   "license": "ISC",
   "devDependencies": {
-    "@types/dat.gui": "^0.7.7",
+    "@types/dat.gui": "^0.7.12",
     "@types/express": "^4.17.14",
     "@types/node": "^18.11.9",
-    "@types/three": "^0.152.0",
+    "@types/three": "^0.160.0",
+    "dat.gui": "^0.7.9",
     "gh-pages": "^5.0.0",
-    "three": "^0.151",
+    "three": "^0.160",
     "ts-loader": "^9.4.1",
     "typedoc": "^0.24.8",
     "typescript": "^5.0.2",
@@ -30,6 +31,7 @@
     "firebase": "^10.5.0",
     "firebase-admin": "^11.11.0",
     "gsap": "^3.12.2",
+    "npm-gui": "^4.0.4",
     "uuid": "^9.0.0"
   }
 }

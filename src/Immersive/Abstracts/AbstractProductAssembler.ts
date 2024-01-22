@@ -1,6 +1,6 @@
 import { Box3, BufferGeometry, Color, EdgesGeometry, Group, LineBasicMaterial, LineSegments, Mesh, Object3D, Vector3 } from 'three'
 import { model } from './models'
-import { ImmersiveConfigurator } from '../ImmersiveConfigurator'
+import { OdinConfigurator } from '../OdinConfigurator'
 type paramsValue = 'width' | 'height' | 'depth'
 
 export abstract class AbstractProductAssembler {
@@ -13,7 +13,7 @@ export abstract class AbstractProductAssembler {
         return this._wireframe
     }
 
-    public abstract generateProduct(product: model): void
+     public  abstract  generateProduct(product: model): void
     public abstract updateProduct(product: model): void
     public destroyAssembler(): void {
         this._object.clear()
@@ -40,7 +40,7 @@ export abstract class AbstractProductAssembler {
     }
     public buildWireFrame(object: Object3D, color = 'Black') {
         this._wireframe.clear()
-        if (!ImmersiveConfigurator.instance.showWireFrame) return
+        if (!OdinConfigurator.instance.showWireFrame) return
         const objectToWireFrame: BufferGeometry[] = []
         const wireColor = new Color(color)
         const material = new LineBasicMaterial({
