@@ -22,7 +22,6 @@ export class MeshLibrary {
           const geomArray: BufferGeometry[] = [];
           gltf.traverse((o: Object3D) => {
             if (o.type === 'Mesh') {
-              console.log(o.name)
               geomArray.push((o as Mesh).geometry);
               geomArray[geomArray.length - 1].name = o.name;
 

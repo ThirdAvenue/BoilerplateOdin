@@ -51,6 +51,8 @@ body {
     z-index: 10;  /* Ensures it stays on top */
 }
 .configWidgetLeft{ 
+	display: none; /* Hide the element */
+
     position: absolute;
     top: 80px;
     left: 80px;

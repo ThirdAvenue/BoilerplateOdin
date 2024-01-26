@@ -4,26 +4,34 @@ import { IVector3 } from '../Immersive/Elements/IVector3'
 import { OdinConfigurator, model } from '../Immersive'
 import { IntegrationProductAssembler } from './Assemblers/IntegrationProductAssembler'
 import { ModuleProductAssembler } from './Assemblers/ModuleProductAssembler'
-
-const assembler = new ModuleProductAssembler()
-const configurator = new OdinConfigurator()
-configurator.typeOfConfigurator="Configurator"
 export type product = model & {
     customer: string
     model: string
     rotation: number
     position: IVector3
 }
-
-const demoProduct: product = {
-    id: uuidv4(),
-    version: 1.0,
-    customer: 'VincentSheppard',
-    model: 'David_Armchair',
-    rotation: 0,
-    position: { x: 0, y: 0, z: 0 }
-
+const configurator = new OdinConfigurator()
+// get Url 
+const currentUrl = window.location.href;
+const urlParams = new URLSearchParams(new URL(currentUrl).search);
+//for debug:  http://localhost:8080/?productID=12345
+const productId = urlParams.get('productID');
+configurator.typeOfConfigurator = "Configurator"
+const assembler = new ModuleProductAssembler()
+if (productId) {
+    configurator.init(assembler, productId, '.canvasWindow', ProductData)
 }
 
-configurator.init(assembler, demoProduct, '.canvasWindow', ProductData)
+
+//buttons 
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    var myButton = document.getElementById('myButton');
+    if (myButton != null) {
+        myButton.addEventListener('click', function () {
+
+        });
+    }
+}
+);
 

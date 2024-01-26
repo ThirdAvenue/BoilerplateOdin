@@ -9,6 +9,9 @@ import { getDatabase, onValue, ref, set } from "firebase/database";
 import { FirebaseStorage, getDownloadURL, getStorage, ref as storageRef } from "firebase/storage";
 import { product } from '../product/productX'
 import { IntegrationProductAssembler } from '../product/Assemblers/IntegrationProductAssembler'
+import { v4 as uuidv4 } from 'uuid'
+import { Vector3 } from 'three'
+
 
 type configuratorType = 'Configurator' | 'Integration' | 'Custom'
 
@@ -20,7 +23,7 @@ export class OdinConfigurator {
     public typeOfConfigurator: configuratorType = "Integration"
     public productmodel!: product
     public static instance: OdinConfigurator
-    public productAssembler!: AbstractProductAssembler| IntegrationProductAssembler
+    public productAssembler!: AbstractProductAssembler | IntegrationProductAssembler
     public meshLibrary!: MeshLibrary
     public debugMode: boolean = true
     public canvas!: HTMLDivElement
@@ -30,6 +33,10 @@ export class OdinConfigurator {
     public firebasePath!: string
     private _eventDispatcher!: EventDispatcher
     private _product: any
+    private meshInfo: MeshInfo[] = []
+    private camPos: Vector3 = new Vector3(0, 0, 0)
+    private targetPos: Vector3 = new Vector3(0, 0, 0)
+    private cameraSettings = []
 
     constructor() {
         OdinConfigurator.instance = this
@@ -47,11 +54,12 @@ export class OdinConfigurator {
      * @description: Initiates the ImmersiveConfigurator.
      */
     public async init(
-        assembler: AbstractProductAssembler| IntegrationProductAssembler,
-        product: product,
+        assembler: AbstractProductAssembler | IntegrationProductAssembler,
+        id: string,
         canvasName: string,
         meshes: MeshInfo[]
     ): Promise<void> {
+        const product = await this.getProductFromDAtabase(id)
 
         const firebaseConfig = {
             databaseURL: 'https://boilerplate3d-default-rtdb.europe-west1.firebasedatabase.app/',
@@ -64,18 +72,22 @@ export class OdinConfigurator {
         this.firebaseStorage = getStorage(this.firebaseapp)
         onValue(ref(database, 'slots/'), (snapshot) => { this.modelUpdate(snapshot.val()) })
 
+        await this.setupConfigurator(product)
+
         this._product = structuredClone(product)
         this.meshLibrary = new MeshLibrary()
         this.productAssembler = assembler
         this._eventDispatcher = new EventDispatcher()
         // create the canvas
         this.canvas = document.querySelector(canvasName) as HTMLDivElement
-   
-        await this.loadData(product.id, meshes)
+        await this.createMeshesInfo(product.customer, product.model, 1)
+        await this.loadData(product.id, this.meshInfo)
         await this.setUI(product.customer)
+        await this.cameraSetup(product.customer)
         this._renderer = new Renderer()
-        await this._renderer.mount(this.canvas)
+        await this._renderer.mount(this.canvas, this.cameraSettings)
         this.renderer.scene.addProduct(assembler.object)
+
 
     }
     /**
@@ -115,8 +127,54 @@ export class OdinConfigurator {
                 meshInfos: meshes,
             },
         }
+
         await this.meshLibrary.load(modeldata)
         await this.productAssembler.generateProduct(this._product)
+    }
+    private async getProductFromDAtabase(id: string) {
+        const url: string = "https://firebasestorage.googleapis.com/v0/b/boilerplate3d.appspot.com/o/ProductsDatabase.json?alt=media&token=72b91e58-0d89-4b54-bd94-54c3fd1a2b34";
+
+        const response = await fetch(url);
+        const data = await response.json();
+        const productData = data.find((product: { id: string }) => product.id === id);
+        const productModel = productData?.model;
+        const customer = productData?.customer;
+        const product: product = {
+            id: uuidv4(),
+            version: 1.0,
+            customer: customer,
+            model: productModel,
+            rotation: 0,
+            position: { x: 0, y: 0, z: 0 }
+
+        }
+        //get cameraposition
+
+
+        this.camPos.set(0, 0, 0)
+        this.targetPos.set(0, 0, 0)
+        return product
+
+    }
+    private async cameraSetup(customer: string) {
+        let dataurl = ""
+        console.log(OdinConfigurator.instance.firebaseStorage)
+        const url = `${customer}/CameraSettings.json`
+        console.log(url)
+        await getDownloadURL(storageRef(OdinConfigurator.instance.firebaseStorage, url)).then((url) => {
+            dataurl = url;
+        })
+        const response = await fetch(dataurl);
+        this.cameraSettings = await response.json();
+
+    }
+    private async createMeshesInfo(company: string, name: string, scale: number) {
+        this.meshInfo.push({
+            company: company,
+            name: name,
+            scale: scale
+        })
+
     }
     private debugFunctions() {
         document.addEventListener('keydown', async (e) => {
@@ -124,6 +182,21 @@ export class OdinConfigurator {
                 console.log(this.renderer.scene)
             }
         })
+    }
+    private async setupConfigurator(product: product) {
+       /*  let dataurl = ""
+        console.log(OdinConfigurator.instance.firebaseStorage)
+        const url = `${product.customer}/Configuration.json`
+        console.log(url)
+        await getDownloadURL(storageRef(OdinConfigurator.instance.firebaseStorage, url)).then((url) => {
+            dataurl = url;
+        })
+       
+
+        const response = await fetch(dataurl);
+        const configuration = await response.json();
+        console.log(configuration)
+ */
     }
 
 }

@@ -1,4 +1,4 @@
-import { Camera, CineonToneMapping, Clock, LinearSRGBColorSpace, PCFShadowMap, PerspectiveCamera, SRGBColorSpace, Scene, WebGLRenderTarget, WebGLRenderer } from 'three'
+import { Camera, CineonToneMapping, Clock, LinearSRGBColorSpace, PCFShadowMap, PerspectiveCamera, SRGBColorSpace, Scene, Vector3, WebGLRenderTarget, WebGLRenderer } from 'three'
 import { MainScene } from './MainScene'
 import { OrbitCamera } from './OrbitCamera'
 import Stats from 'three/examples/jsm/libs/stats.module.js'
@@ -55,16 +55,16 @@ export class Renderer {
         //add statistics to the page
         this.stats = new Stats()
         if (OdinConfigurator.instance.debugMode === true) {
-            document.body.appendChild(this.stats.dom)
+           // document.body.appendChild(this.stats.dom)
         }
     }
-    public async mount(container: HTMLDivElement) {
+    public async mount(container: HTMLDivElement,cameraSettings:Array<any>) {
         this.container = container
         const { clientWidth, clientHeight } = this.container
         this.container.appendChild(this._renderer.domElement)
         this._renderer.setSize(clientWidth, clientHeight)
 
-        await this.cameraSetup(clientWidth, clientHeight)
+        await this.cameraSetup(clientWidth, clientHeight,cameraSettings)
         window.addEventListener('resize', this.onWindowResize)
         //provide own rendertarget to the composer 
         const renderTarget = new WebGLRenderTarget(
@@ -81,7 +81,7 @@ export class Renderer {
 
         let test: boolean = false
         const gui = new GUI()
-
+        gui.close()
         this._scene.init()
         gui.add(this.scene.sunLight, 'intensity', 0, 30, 0.01).name('Sunlight intensity')
         gui.add(this.scene.hemisphericLight, 'intensity', 0, 30, 0.01).name('hemisphere intensity')
@@ -147,7 +147,7 @@ export class Renderer {
         OdinConfigurator.instance.renderer.composer.setSize(clientWidth, clientHeight)
 
     }
-    private async cameraSetup(clientWidth: number, clientHeight: number) {
+    private async cameraSetup(clientWidth: number, clientHeight: number,cameraSettings:Array<any>) {
 
         if (OdinConfigurator.instance.productAssembler) {
             const camera = await OdinConfigurator.instance.productAssembler.object.traverse((child) => {
@@ -161,9 +161,13 @@ export class Renderer {
 
             }
         }
+        const CamPos = new Vector3(cameraSettings[0].xCam, cameraSettings[0].yCam, cameraSettings[0].zCam)
+        const TargetPos = new Vector3(cameraSettings[0].xLook, cameraSettings[0].yLook, cameraSettings[0].zLook)
+
         if (Renderer._camera == null) {
-            Renderer._camera = new OrbitCamera(60, this.canvas, 0.01, 100)
+            Renderer._camera = new OrbitCamera(60, this.canvas, 0.01, 100,CamPos,TargetPos)
             if (Renderer._camera instanceof OrbitCamera) {
+
                 Renderer._camera.aspect = clientWidth / clientHeight
                 Renderer._camera.updateProjectionMatrix()
             }

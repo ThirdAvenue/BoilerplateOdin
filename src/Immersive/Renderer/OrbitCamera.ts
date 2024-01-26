@@ -18,11 +18,11 @@ export class OrbitCamera extends PerspectiveCamera {
     //time in seconds until the rotation starts
     private autoMoveTimer = 25
 
-    constructor(fov: number, private canvas: HTMLCanvasElement, near: number, far: number) {
+    constructor(fov: number, private canvas: HTMLCanvasElement, near: number, far: number,camPos:Vector3,targetPos:Vector3) {
         super(fov, canvas.width / canvas.height, near, far)
         this.controls = new OrbitControls(this, canvas)
         this.controls.zoomSpeed = this.zoomSpeed
-        this.init()
+        this.init(camPos, targetPos)
         this.clock = new Clock()
         this.clock.start()
         this.controls.autoRotateSpeed = -1
@@ -30,15 +30,15 @@ export class OrbitCamera extends PerspectiveCamera {
         this.lastMoveTime = -this.autoMoveTimer
     }
 
-    private init() {
+    private init(camPos:Vector3, targetPos:Vector3) {
         
         this.controls.enableDamping = true
         this.controls.dampingFactor = 0.1
         this.controls.maxDistance = 11
-        this.controls.enablePan = false
+        this.controls.enablePan = true
         this.controls.rotateSpeed = 0.2
-        this.controls.maxPolarAngle = Math.PI /2.1
-        this.goToOrigin(1)
+        this.controls.maxPolarAngle = Math.PI
+        this.goToOrigin(1,camPos,targetPos)
     }
 
 
@@ -66,8 +66,12 @@ export class OrbitCamera extends PerspectiveCamera {
         this.target = new Vector3()
     }
 
-    public goToOrigin(duration: number) {
-        this.snapto(new Vector3(0, 0.5, 1.6), new Vector3(0, 0.6, 0))
+    public goToOrigin(duration: number,campos?:Vector3,targetpos?:Vector3) {
+        if (campos && targetpos) {
+            this.snapto(campos, targetpos)
+
+        }
+        else this.snapto(new Vector3(0, 0.5, 1.6), new Vector3(0, 0.6, 0))
     }
 
     public moveTarget(endPosition: Vector3, target: Vector3, duration: number) {

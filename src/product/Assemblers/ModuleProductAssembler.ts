@@ -16,7 +16,7 @@ export class ModuleProductAssembler extends AbstractProductAssembler {
         await this.setMaterial(downloadUrl, product)
     }
     public async updateProduct(product: product): Promise<void> {
-        debugger
+
         this.object.clear()
         await this.buildProduct(product)
     }
@@ -35,12 +35,15 @@ export class ModuleProductAssembler extends AbstractProductAssembler {
         //load json from url and create model 
         const response = await fetch(url);
         const data = await response.json();
+
         for (const model of this.object.children) {
             if (model instanceof Mesh) {
-                //find woodwork in data get the index in data 
-                const materialName = data.find((material: { model: string }) => material.model === model.name)?.material;
-                console.log(materialName)
-                if (materialName == undefined) {debugger}
+                //find product in data get the index in data 
+                console.log(model.name)
+
+                let materialName = data.find((material: { model: string }) => material.model === model.name)?.material;
+                console.log(data)
+                if (materialName == undefined) { console.log(materialName), materialName = "AluminiumMaterial1", console.log("no material found") }
                 const material = await MaterialLibrary.get(materialName)
                 const textureMap = data.find((material: { model: string }) => material.model === model.name)?.texture;
                 //get the material from the material library
@@ -71,7 +74,6 @@ export class ModuleProductAssembler extends AbstractProductAssembler {
 
 
                     }
-                    if (model.name==="Wires")console.log(material)
                 }
                 model.material = material
 

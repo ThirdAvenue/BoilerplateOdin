@@ -15,6 +15,10 @@ import { GlassMaterial } from './Materials/GlassMaterial'
 import { Fabric1 } from './Materials/Fabric1'
 import { Wire } from './Materials/wire'
 import { BlackPlastic } from './Materials/BlackPlastic'
+import { Light } from './Materials/Light'
+import { Metal2 } from './Materials/Metal2'
+import { Metal1 } from './Materials/Metal1'
+import { Aluminium1 } from './Materials/Aluminium1'
 
 export class MaterialLibrary {
     public static materials: Map<string, Material> = new Map()
@@ -28,9 +32,13 @@ export class MaterialLibrary {
         Wood: Wood,
         Fabric1:Fabric1,
         Wire:Wire,
+        Light:Light,
+        Metal1: Metal1,
+        Metal2: Metal2,
         BlackPlastic: BlackPlastic,
         FrostedGlassMaterial: FrostedGlassMaterial,
         GlassMaterial: GlassMaterial,
+        Aluminium1:Aluminium1,
     }
 
     static async get(materialName: string) {
