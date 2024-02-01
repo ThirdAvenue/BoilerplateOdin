@@ -11,15 +11,17 @@ import { product } from '../product/productX'
 import { IntegrationProductAssembler } from '../product/Assemblers/IntegrationProductAssembler'
 import { v4 as uuidv4 } from 'uuid'
 import { Vector3 } from 'three'
+import { IntegrationRenderer } from './Renderer/IntegrationRenderer'
 
 
-type configuratorType = 'Configurator' | 'Integration' | 'Custom'
+export type configuratorType = 'Configurator' | 'Integration' | 'Custom'
 
 export class OdinConfigurator {
-    private _renderer!: Renderer
-    get renderer(): Renderer {
+    private _renderer!: Renderer | IntegrationRenderer
+    get renderer(): Renderer | IntegrationRenderer {
         return this._renderer
     }
+
     public typeOfConfigurator: configuratorType = "Integration"
     public productmodel!: product
     public static instance: OdinConfigurator
@@ -57,7 +59,7 @@ export class OdinConfigurator {
         assembler: AbstractProductAssembler | IntegrationProductAssembler,
         id: string,
         canvasName: string,
-        meshes: MeshInfo[]
+        meshes: MeshInfo[],
     ): Promise<void> {
         const product = await this.getProductFromDAtabase(id)
 
@@ -76,18 +78,29 @@ export class OdinConfigurator {
 
         this._product = structuredClone(product)
         this.meshLibrary = new MeshLibrary()
-        this.productAssembler = assembler
+        if (this.typeOfConfigurator === "Integration") {
+            this.productAssembler = new IntegrationProductAssembler()
+        }
+        else { this.productAssembler = assembler }
         this._eventDispatcher = new EventDispatcher()
         // create the canvas
         this.canvas = document.querySelector(canvasName) as HTMLDivElement
         await this.createMeshesInfo(product.customer, product.model, 1)
         await this.loadData(product.id, this.meshInfo)
         await this.setUI(product.customer)
-        await this.cameraSetup(product.customer)
-        this._renderer = new Renderer()
+        if (this.typeOfConfigurator === "Configurator") {
+            await this.cameraSetup(product.customer)
+            this._renderer = new Renderer()
+        }
+        else this._renderer = new Renderer()
         await this._renderer.mount(this.canvas, this.cameraSettings)
-        this.renderer.scene.addProduct(assembler.object)
+        console.log(this.productAssembler.object)
+        this.renderer.scene.addProduct(this.productAssembler.object)
 
+        //check if this.preoductAssembler is type of IntegrationProductAssembler
+/*         if (this.productAssembler instanceof IntegrationProductAssembler) {
+            this.renderer.maskScene.add(this.productAssembler.maskObject)
+        } */
 
     }
     /**
@@ -137,6 +150,7 @@ export class OdinConfigurator {
         const response = await fetch(url);
         const data = await response.json();
         const productData = data.find((product: { id: string }) => product.id === id);
+        this.typeOfConfigurator = productData?.type as configuratorType;
         const productModel = productData?.model;
         const customer = productData?.customer;
         const product: product = {
@@ -184,19 +198,19 @@ export class OdinConfigurator {
         })
     }
     private async setupConfigurator(product: product) {
-       /*  let dataurl = ""
-        console.log(OdinConfigurator.instance.firebaseStorage)
-        const url = `${product.customer}/Configuration.json`
-        console.log(url)
-        await getDownloadURL(storageRef(OdinConfigurator.instance.firebaseStorage, url)).then((url) => {
-            dataurl = url;
-        })
-       
-
-        const response = await fetch(dataurl);
-        const configuration = await response.json();
-        console.log(configuration)
- */
+        /*  let dataurl = ""
+         console.log(OdinConfigurator.instance.firebaseStorage)
+         const url = `${product.customer}/Configuration.json`
+         console.log(url)
+         await getDownloadURL(storageRef(OdinConfigurator.instance.firebaseStorage, url)).then((url) => {
+             dataurl = url;
+         })
+        
+ 
+         const response = await fetch(dataurl);
+         const configuration = await response.json();
+         console.log(configuration)
+  */
     }
 
 }

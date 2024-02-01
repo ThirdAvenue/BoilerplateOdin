@@ -39,7 +39,6 @@ export class ModuleProductAssembler extends AbstractProductAssembler {
         for (const model of this.object.children) {
             if (model instanceof Mesh) {
                 //find product in data get the index in data 
-                console.log(model.name)
 
                 let materialName = data.find((material: { model: string }) => material.model === model.name)?.material;
                 console.log(data)

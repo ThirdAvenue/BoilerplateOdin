@@ -1,4 +1,4 @@
-import { BoxGeometry, Camera, Mesh, MeshStandardMaterial, PerspectiveCamera, ShadowMaterial, TextureLoader } from "three";
+import { BoxGeometry, Camera, LinearSRGBColorSpace, Mesh, MeshBasicMaterial, MeshStandardMaterial, PerspectiveCamera, RepeatWrapping, SRGBColorSpace, ShadowMaterial, TextureLoader } from "three";
 import { GLTF, GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { MaterialLibrary, OdinConfigurator } from "../../Immersive";
 import { getDownloadURL, ref } from "firebase/storage";
@@ -21,15 +21,31 @@ export class SceneLoaderMesh {
 
 
     private async loadProduct(products: string[]) {
-        const material = await MaterialLibrary.get("Color1")
+        const material = await MaterialLibrary.get("Vadain1")
         if (material == null) return
         const loader = new TextureLoader();
         let aOmapUrl = ""
-        /*     await getDownloadURL(ref(OdinConfigurator.instance.firebaseStorage, `${OdinConfigurator.instance.firebasePath}CurtainAO.jpg`)).then((url) => {
+             await getDownloadURL(ref(OdinConfigurator.instance.firebaseStorage, `${OdinConfigurator.instance.firebasePath}CurtainAO.jpg`)).then((url) => {
                 aOmapUrl = url
-            }) */
-        //const texture = await loader.loadAsync(aOmapUrl);
-        // material.map = texture;
+            }) 
+        const texture = await loader.loadAsync(aOmapUrl);
+         material.aoMap = texture;
+
+         let textureUrl = ""
+         await getDownloadURL(ref(OdinConfigurator.instance.firebaseStorage, `${OdinConfigurator.instance.firebasePath}Curtain1_1_Fabric2_d.jpg`)).then((url) => {
+            textureUrl = url
+        }) 
+        const diffusetexture = await loader.loadAsync(textureUrl);
+        diffusetexture.colorSpace= LinearSRGBColorSpace
+        material.map = diffusetexture;
+        material.map.repeat.x = 5;
+        material.map.wrapS = RepeatWrapping;
+        material.map.repeat.y = 5;
+        material.map.wrapT = RepeatWrapping;
+        material.needsUpdate=true
+
+        material.aoMap.repeat.x = 1
+        material.aoMap.repeat.y = 1
 
         for (const child of this.scene.scene.children) {
             if (child instanceof Mesh) {
@@ -41,9 +57,9 @@ export class SceneLoaderMesh {
                     this.products.push(child)
                 }
                 if (child instanceof Mesh && child.name === "Mask") {
+                    child.material = new MeshBasicMaterial({ opacity: 1 })
                     this.products.push(child)
                 }
-                console.log(this.products)
             }
         }
 

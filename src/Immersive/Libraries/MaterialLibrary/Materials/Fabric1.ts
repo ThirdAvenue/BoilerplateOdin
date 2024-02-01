@@ -7,13 +7,19 @@ export const Fabric1: MaterialData = {
     type: 'MeshPhysicalMaterial',
     properties: {
         color: 0xffffff,
-        envMap: CubeMapClass.cubeMap,
-        envMapIntensity: 0.5,
+       /*  envMap: CubeMapClass.cubeMap,
+        envMapIntensity: 0.5, */
         metalness: 1 
     },
+    textures: {
+        map: '../Assets/Curtain1_1_Fabric1_d.jpg',
+        //alphaMap: '../Assets/Alpha_Test.jpg',
+        //aoMap:'../Assets/CurtainAO.jpg'
+       // normalMap:''
+     },
     size: {
-        width: 1,
-        height: 1,
+        width: 5,
+        height: 5,
     },
 };
 

@@ -4,15 +4,16 @@ body {
     overflow: hidden;
     margin: 0px;
 }
-.canvasWindow {
+/* .canvasWindow {
 
     position: relative;
     width: 100vw;
 	height: 100vh;
+	color:rgba(0, 0, 0, 1)
 
-}
+} */
 
-/* canvaswindow for integration 
+ /*canvaswindow for integration*/ 
 .canvasWindow {
 
     position: relative;
@@ -28,7 +29,7 @@ body {
 	-moz-background-size: cover;
 	-o-background-size: cover;
 	background-size: cover;
-} */
+}
 .inputField {
     position: absolute;
     bottom: 25px;

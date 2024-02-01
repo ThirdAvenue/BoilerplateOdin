@@ -41,6 +41,7 @@ export class MainScene extends Scene {
         this.scenery.add(object)
     }
     public addProduct(object: Object3D) {
+        console.log(object)
         this.product.add(object)
     }
     public addUIElement(object: Object3D) {

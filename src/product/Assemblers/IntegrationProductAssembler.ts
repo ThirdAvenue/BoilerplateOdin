@@ -8,6 +8,7 @@ import { SceneLoaderMesh } from '../Elements/SceneLoaderMesh'
 export class IntegrationProductAssembler {
 
     public object: Group = new Group()
+    public maskObject: Group = new Group()
 
     public async generateProduct(product: product): Promise<void> {
         //Build the parts, this can be done in a seperate "Buildstrategy but for this demo it is done right here in the assembler"
@@ -29,15 +30,17 @@ export class IntegrationProductAssembler {
         await scene.load(downloadUrl, ["Curtain1", "Curtain2"])
         for (const product of scene.products) {
             if (product.name!="Mask") this.object.add(product)
-            //if (product.name === "Mask")OdinConfigurator.instance.renderer.scene.addProduct(product);
+            //if (product.name === "Mask")this.maskObject.add(product);
         }
+        
         //this.object.add(scene.mask)
         //OdinConfigurator.instance.renderer.maskScene.add(scene.mask)
         if (scene.camera != null) {
+            console.log("camera added")
             this.object.add(scene.camera)
             Renderer._camera = scene.camera
         }
-
+        
 
     }
 }

@@ -19,6 +19,9 @@ import { Light } from './Materials/Light'
 import { Metal2 } from './Materials/Metal2'
 import { Metal1 } from './Materials/Metal1'
 import { Aluminium1 } from './Materials/Aluminium1'
+import { standard1 } from './Materials/standard1'
+import { standard2 } from './Materials/standard2'
+import { Vadain1 } from './Materials/Vadain1'
 
 export class MaterialLibrary {
     public static materials: Map<string, Material> = new Map()
@@ -26,10 +29,13 @@ export class MaterialLibrary {
         Color1: color1,
         Color2: color2,
         Color3: color3,
+        standard1: standard1,
+        standard2: standard2,
         XRayMaterial: XRayMaterial,
         AluminiumMaterial1: AluminiumMaterial1,
         AluminiumMaterial2: AluminiumMaterial2,
         Wood: Wood,
+        Vadain1:Vadain1,
         Fabric1:Fabric1,
         Wire:Wire,
         Light:Light,
