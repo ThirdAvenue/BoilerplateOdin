@@ -64,9 +64,9 @@ export class OdinConfigurator {
 
         window.addEventListener('message', (event) => {
             // Check the origin of the sender to ensure it matches expectations for security
-            if (event.origin === "https://thirdavenue.github.io/vadain/") {
+            if (event.origin === "https://boilerplate3d.web.app/?productID=62345") {
                 console.log('Message received from parent:', event.data);
-                alert("Message received from parent")
+                console.log("Message received from parent")
             }
         });
 
