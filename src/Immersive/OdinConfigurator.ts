@@ -64,9 +64,8 @@ export class OdinConfigurator {
 
         window.addEventListener('message', (event) => {
             // Check the origin of the sender to ensure it matches expectations for security
-            if (event.origin === "https://boilerplate3d.web.app/?productID=62345") {
+            if (event.origin === "http://localhost:8080/?productID=62345") {
                 console.log('Message received from parent:', event.data);
-                console.log("Message received from parent")
             }
         });
 
@@ -209,6 +208,9 @@ export class OdinConfigurator {
         document.addEventListener('keydown', async (e) => {
             if (e.code === 'KeyS') {
                 console.log(this.renderer.scene)
+            }
+            if (e.code === 'KeyC') {
+                if (this.productAssembler instanceof IntegrationProductAssembler) this.productAssembler.updateMaterial()
             }
         })
     }

@@ -46,6 +46,25 @@ export class SceneLoaderMesh {
         material.map.wrapT = RepeatWrapping;
         material.needsUpdate=true
 
+        let textureUrlTrans = ""
+        await getDownloadURL(ref(OdinConfigurator.instance.firebaseStorage, `${OdinConfigurator.instance.firebasePath}Curtain1_1_Fabric1_a.jpg`)).then((url) => {
+            textureUrlTrans = url
+       }) 
+       const transtexture = await loader.loadAsync(textureUrlTrans);
+       transtexture.colorSpace= SRGBColorSpace
+       material.alphaMap = transtexture;
+       material.alphaMap.repeat.x = 1;
+       material.alphaMap.wrapS = RepeatWrapping;
+       material.alphaMap.repeat.y = 1;
+       material.alphaMap.wrapT = RepeatWrapping;
+       material.needsUpdate=true
+
+        
+        
+        
+        
+        
+
        
 
         for (const child of this.scene.scene.children) {
