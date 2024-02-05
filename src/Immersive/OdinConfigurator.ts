@@ -210,6 +210,7 @@ export class OdinConfigurator {
                 console.log(this.renderer.scene)
             }
             if (e.code === 'KeyC') {
+                console.log("changematerial")
                 if (this.productAssembler instanceof IntegrationProductAssembler) this.productAssembler.updateMaterial()
             }
         })
