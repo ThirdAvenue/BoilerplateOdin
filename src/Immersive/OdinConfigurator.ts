@@ -208,7 +208,7 @@ export class OdinConfigurator {
         })
         window.addEventListener('message', (event) => {
             // Check the origin of the sender to ensure it matches expectations for security
-            console.log(event)
+            if (this.productAssembler instanceof IntegrationProductAssembler) this.productAssembler.updateMaterial()
         });
     }
     private async setupConfigurator(product: product) {
