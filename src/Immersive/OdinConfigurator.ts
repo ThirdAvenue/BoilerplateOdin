@@ -62,14 +62,6 @@ export class OdinConfigurator {
         meshes: MeshInfo[],
     ): Promise<void> {
 
-        window.addEventListener('message', (event) => {
-            // Check the origin of the sender to ensure it matches expectations for security
-            if (event.origin === "http://localhost:8080/?productID=62345") {
-                console.log('Message received from parent:', event.data);
-            }
-        });
-
-
         const product = await this.getProductFromDAtabase(id)
 
         const firebaseConfig = {
@@ -214,6 +206,10 @@ export class OdinConfigurator {
                 if (this.productAssembler instanceof IntegrationProductAssembler) this.productAssembler.updateMaterial()
             }
         })
+        window.addEventListener('message', (event) => {
+            // Check the origin of the sender to ensure it matches expectations for security
+            console.log(event)
+        });
     }
     private async setupConfigurator(product: product) {
         /*  let dataurl = ""
