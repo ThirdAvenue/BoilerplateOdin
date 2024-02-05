@@ -6,10 +6,13 @@ import {
     Mesh,
     MeshPhysicalMaterial,
     Object3D,
+    RectAreaLight,
     Scene,
     ShadowMaterial,
     TextureLoader,
 } from 'three'
+import { RectAreaLightHelper } from 'three/examples/jsm/helpers/RectAreaLightHelper.js';
+
 import { OdinConfigurator } from '..'
 
 export type layer = 'Scene' | 'Product'
@@ -43,6 +46,7 @@ export class MainScene extends Scene {
     public addProduct(object: Object3D) {
         console.log(object)
         this.product.add(object)
+        
     }
     public addUIElement(object: Object3D) {
         this.uiElements.add(object)
@@ -51,11 +55,11 @@ export class MainScene extends Scene {
         this.dimensionElements.add(object)
     }
     private setupScene() {
-        this.hemisphericLight = new HemisphereLight(0xfffdf2, 0xfffdf2, 0.15)
-        this.sunLight = new DirectionalLight('#fffdf2', 0.5)
+        this.hemisphericLight = new HemisphereLight(0xfffdf2, 0xfffdf2, 1)
+        this.sunLight = new DirectionalLight('#fffdf2', 0.1)
         this.sunLight.position.set(10, 10, 10)
         this.sunLight.target.position.set(0, 0, 0)
-        this.sunLight.shadow.radius = 5
+        this.sunLight.shadow.radius = 10
         this.sunLight.castShadow = true
         this.sunLight.shadow.bias = -0.00001
         this.sunLight.shadow.normalBias = 0.1
@@ -79,6 +83,18 @@ export class MainScene extends Scene {
         floor.position.y = -0.05
         floor.receiveShadow = true
         this.scenery.add(this.hemisphericLight, this.sunLight, floor)
+
+
+        const lightplane = new RectAreaLight(0xffffff, 3, 2, 2.3)
+        lightplane.position.set(-0, 3.1, -3.3)
+        lightplane.rotateY(Math.PI/3)
+        lightplane.rotateY(Math.PI/2)
+        lightplane.rotateY(-Math.PI/9)
+
+
+        this.scenery.add(lightplane);
+
+
 /*         const backgroundImage = new TextureLoader()
         backgroundImage.load('Assets/BackGround1.jpg', function (texture) {
             texture.

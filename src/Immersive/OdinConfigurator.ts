@@ -61,6 +61,16 @@ export class OdinConfigurator {
         canvasName: string,
         meshes: MeshInfo[],
     ): Promise<void> {
+
+        window.addEventListener('message', (event) => {
+            // Check the origin of the sender to ensure it matches expectations for security
+            if (event.origin === "https://thirdavenue.github.io/vadain/") {
+                console.log('Message received from parent:', event.data);
+                alert("Message received from parent")
+            }
+        });
+
+
         const product = await this.getProductFromDAtabase(id)
 
         const firebaseConfig = {
@@ -101,7 +111,12 @@ export class OdinConfigurator {
 /*         if (this.productAssembler instanceof IntegrationProductAssembler) {
             this.renderer.maskScene.add(this.productAssembler.maskObject)
         } */
+        //pruduct is loaded, remove loading screen 
 
+        const loadingScreen = document.getElementById('loadingScreen');
+        if (loadingScreen) {
+            loadingScreen.style.display = 'none';
+        }
     }
     /**
      * @param next new model that needs to be loaded. 

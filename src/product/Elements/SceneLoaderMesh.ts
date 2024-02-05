@@ -25,41 +25,42 @@ export class SceneLoaderMesh {
         if (material == null) return
         const loader = new TextureLoader();
         let aOmapUrl = ""
-             await getDownloadURL(ref(OdinConfigurator.instance.firebaseStorage, `${OdinConfigurator.instance.firebasePath}CurtainAO.jpg`)).then((url) => {
+             await getDownloadURL(ref(OdinConfigurator.instance.firebaseStorage, `${OdinConfigurator.instance.firebasePath}CurtainAO2.jpg`)).then((url) => {
                 aOmapUrl = url
             }) 
         const texture = await loader.loadAsync(aOmapUrl);
-         material.aoMap = texture;
+          material.aoMap = texture;
+         material.aoMap.repeat.x = 1
+         material.aoMap.repeat.y = 1
 
          let textureUrl = ""
-         await getDownloadURL(ref(OdinConfigurator.instance.firebaseStorage, `${OdinConfigurator.instance.firebasePath}Curtain1_1_Fabric2_d.jpg`)).then((url) => {
+         await getDownloadURL(ref(OdinConfigurator.instance.firebaseStorage, `${OdinConfigurator.instance.firebasePath}Curtain1_1_Fabric1_d.jpg`)).then((url) => {
             textureUrl = url
         }) 
         const diffusetexture = await loader.loadAsync(textureUrl);
-        diffusetexture.colorSpace= LinearSRGBColorSpace
+        diffusetexture.colorSpace= SRGBColorSpace
         material.map = diffusetexture;
-        material.map.repeat.x = 5;
+        material.map.repeat.x = 1;
         material.map.wrapS = RepeatWrapping;
-        material.map.repeat.y = 5;
+        material.map.repeat.y = 1;
         material.map.wrapT = RepeatWrapping;
         material.needsUpdate=true
 
-        material.aoMap.repeat.x = 1
-        material.aoMap.repeat.y = 1
+       
 
         for (const child of this.scene.scene.children) {
             if (child instanceof Mesh) {
                 child.material = material
-                if (child instanceof Mesh && child.name == "Curtain1") {
-                    this.products.push(child)
-                }
                 if (child instanceof Mesh && child.name == "Curtain2") {
                     this.products.push(child)
                 }
-                if (child instanceof Mesh && child.name === "Mask") {
-                    child.material = new MeshBasicMaterial({ opacity: 1 })
+                 if (child instanceof Mesh && child.name == "Curtain1") {
                     this.products.push(child)
                 }
+               /*  if (child instanceof Mesh && child.name === "Mask") {
+                    child.material = new MeshBasicMaterial({ opacity: 1 })
+                    this.products.push(child)
+                }  */
             }
         }
 

@@ -21,7 +21,7 @@ static change(event: any) {
 
   static updateMap(location = 1) {
     return new CubeTextureLoader()
-      .setPath(`${EvironmentTextureLocation}/`)
+      .setPath(`${EvironmentTextureLocation}/inside/`)
       .load(['px.png', 'nx.png', 'py.png', 'ny.png', 'pz.png', 'nz.png']);
   }
 }

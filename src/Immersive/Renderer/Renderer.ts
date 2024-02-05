@@ -44,7 +44,6 @@ export class Renderer {
         this.maskScene = new Scene()
         this._renderer.shadowMap.enabled = true
         this._renderer.shadowMap.type = PCFShadowMap
-        this._renderer.useLegacyLights = true
         this._renderer.toneMapping = CineonToneMapping
         this._renderer.toneMappingExposure = 2.2
         this._renderer.outputColorSpace = SRGBColorSpace
@@ -80,7 +79,7 @@ export class Renderer {
 
         let test: boolean = false
         const gui = new GUI()
-        gui.close()
+        gui.hide()
         this._scene.init()
         gui.add(this.scene.sunLight, 'intensity', 0, 30, 0.01).name('Sunlight intensity')
         gui.add(this.scene.hemisphericLight, 'intensity', 0, 30, 0.01).name('hemisphere intensity')
