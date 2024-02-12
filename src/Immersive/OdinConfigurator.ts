@@ -203,13 +203,12 @@ export class OdinConfigurator {
             }
             if (e.code === 'KeyC') {
                 console.log("changematerial")
-                if (this.productAssembler instanceof IntegrationProductAssembler) this.productAssembler.updateMaterial("2")
+                if (this.productAssembler instanceof IntegrationProductAssembler) this.productAssembler.updateMaterial()
             }
         })
         window.addEventListener('message', (event) => {
             // Check the origin of the sender to ensure it matches expectations for security
-            const data = event.data
-            if (this.productAssembler instanceof IntegrationProductAssembler) this.productAssembler.updateMaterial(data)
+            if (this.productAssembler instanceof IntegrationProductAssembler) this.productAssembler.updateMaterial()
         });
     }
     private async setupConfigurator(product: product) {
