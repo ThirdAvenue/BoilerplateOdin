@@ -20,12 +20,11 @@ export class IntegrationProductAssembler {
         /*  this.object.clear()
          await this.buildProduct(product) */
     }
-    public async updateMaterial() {
+    public async updateMaterial(data:string) {
         console.log('update material')
 
         const material = await MaterialLibrary.get("Vadain1")
-        if (this.fabricnr === 2) this.fabricnr = 1
-        else this.fabricnr = 2
+        this.fabricnr = parseInt(data)
 
         if (material == null) return
         if (material instanceof MeshPhysicalMaterial) {
