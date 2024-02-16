@@ -1,7 +1,7 @@
 import { Camera, Group, LinearSRGBColorSpace, MeshPhysicalMaterial, MeshStandardMaterial, RepeatWrapping, SRGBColorSpace, TextureLoader, sRGBEncoding } from 'three'
 import { AbstractProductAssembler, MaterialLibrary, MeshLibrary, OdinConfigurator, Renderer, model } from '../../Immersive'
 import { productMesh } from '../Elements/productMesh'
-import { product } from '../productX'
+import { product } from '../controllRoomApp'
 import { getDownloadURL, ref } from 'firebase/storage'
 import { SceneLoaderMesh } from '../Elements/SceneLoaderMesh'
 
@@ -59,25 +59,8 @@ export class IntegrationProductAssembler {
     }
 
     private async buildProduct(product: product): Promise<void> {
-        let downloadUrl = ""
-        console.log('build product')
-        await getDownloadURL(ref(OdinConfigurator.instance.firebaseStorage, `${OdinConfigurator.instance.firebasePath}scene.glb`)).then((url) => {
-            downloadUrl = url;
-        })
-        const scene = new SceneLoaderMesh()
-        await scene.load(downloadUrl, ["Curtain1", "Curtain2"])
-        for (const product of scene.products) {
-            if (product.name != "Mask") this.object.add(product)
-            //if (product.name === "Mask")this.maskObject.add(product);
-        }
-
-        //this.object.add(scene.mask)
-        //OdinConfigurator.instance.renderer.maskScene.add(scene.mask)
-        if (scene.camera != null) {
-            console.log("camera added")
-            this.object.add(scene.camera)
-            Renderer._camera = scene.camera
-        }
+    
+        
 
 
     }

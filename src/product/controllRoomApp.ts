@@ -6,22 +6,35 @@ import { IntegrationProductAssembler } from './Assemblers/IntegrationProductAsse
 import { ModuleProductAssembler } from './Assemblers/ModuleProductAssembler'
 export type product = model & {
     customer: string
-    model: string
-    rotation: number
-    position: IVector3
+    walls: wallConfig[]
+    screens: screenConfig[]
 }
+export type wallConfig = {
+    type: string;
+    columns:number;
+    rows:number
+}
+export type screenConfig= {
+    type: string;
+    rotation: screenRotation;
+    position: number
+}
+type screenRotation = 'landscape' | 'portrait'
 type configuratorType = 'Configurator' | 'Integration' | 'Custom'
 
 const configurator = new OdinConfigurator()
 // get Url 
 const currentUrl = window.location.href;
 const urlParams = new URLSearchParams(new URL(currentUrl).search);
-//for debug:  http://localhost:8080/?productID=12345
-const productId = urlParams.get('productID');
+//for debug:  http://localhost:8080/?UserID=12345
+let userId = urlParams.get('UserID');
+if (userId == null) userId = "None"
+const firebaseDataBase = "https://barco-controllroom-default-rtdb.europe-west1.firebasedatabase.app/"
+const firebaseStorage = "gs://barco-controllroom.appspot.com"
 
-if (productId) {
-    configurator.init(new ModuleProductAssembler(), productId, '.canvasWindow', ProductData)
-}
+configurator.init(new ModuleProductAssembler(),firebaseDataBase,firebaseStorage, userId,'.canvasWindow',"Barco")
+
+
 
 //buttons 
 

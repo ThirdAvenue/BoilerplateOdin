@@ -45,7 +45,7 @@ export abstract class AbstractProductAssembler {
         const wireColor = new Color(color)
         const material = new LineBasicMaterial({
             color: wireColor,
-            linewidth: 50,
+            linewidth: 30,
             precision: 'highp',
             polygonOffset: true,
             polygonOffsetFactor: 0.3,
@@ -54,7 +54,7 @@ export abstract class AbstractProductAssembler {
         if (object instanceof Mesh) {
             const geometry = new EdgesGeometry(object.geometry)
             const wireframeObject = new LineSegments(geometry, material)
-            wireframeObject.layers.set(3)
+            wireframeObject.layers.set(0)
             object.getWorldPosition(position)
             objectToWireFrame.push(object.geometry)
             wireframeObject.rotation.set(object.rotation.x, object.rotation.y, object.rotation.z)
@@ -67,7 +67,7 @@ export abstract class AbstractProductAssembler {
                 if (child instanceof Mesh) {
                     const geometry = new EdgesGeometry(child.geometry)
                     const wireframeObject = new LineSegments(geometry, material)
-                    wireframeObject.layers.set(3)
+                    wireframeObject.layers.set(0)
                     child.getWorldPosition(position)
                     objectToWireFrame.push(child.geometry)
                     wireframeObject.rotation.set(
@@ -82,7 +82,6 @@ export abstract class AbstractProductAssembler {
             }
         }
         this.object.add(this.wireframe)
-        console.log(this.object)
     }
     
 }

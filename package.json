@@ -1,13 +1,13 @@
 {
-  "name": "Odin Boilerplate",
+  "name": "Barco Controllroom",
   "version": "0.001",
-  "description": "Boilerplate with product example",
+  "description": "BArco controll",
   "scripts": {
     "build": "webpack --config ./src/webpack.prod.js",
     "dev": "webpack serve --config ./src/webpack.dev.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Renson",
+  "author": "Third Avenue",
   "license": "ISC",
   "devDependencies": {
     "@types/dat.gui": "^0.7.12",

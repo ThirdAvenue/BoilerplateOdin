@@ -1,5 +1,5 @@
 import { OdinConfigurator } from '..'
-import { product } from '../../product/productX'
+import { product } from '../../product/controllRoomApp'
 
 export function apiCall(product: product) {
     const taken: number[] = [] // all spots already taken
