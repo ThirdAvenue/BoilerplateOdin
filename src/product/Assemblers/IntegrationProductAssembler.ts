@@ -1,7 +1,7 @@
 import { Camera, Group, LinearSRGBColorSpace, MeshPhysicalMaterial, MeshStandardMaterial, RepeatWrapping, SRGBColorSpace, TextureLoader, sRGBEncoding } from 'three'
 import { AbstractProductAssembler, MaterialLibrary, MeshLibrary, OdinConfigurator, Renderer, model } from '../../Immersive'
 import { productMesh } from '../Elements/productMesh'
-import { product } from '../productX'
+import { product } from '../controllRoomApp'
 import { getDownloadURL, ref } from 'firebase/storage'
 import { SceneLoaderMesh } from '../Elements/SceneLoaderMesh'
 
@@ -84,7 +84,6 @@ export class IntegrationProductAssembler {
         //this.object.add(scene.mask)
         //OdinConfigurator.instance.renderer.maskScene.add(scene.mask)
         if (scene.camera != null) {
-            console.log("camera added")
             this.object.add(scene.camera)
             Renderer._camera = scene.camera
         }

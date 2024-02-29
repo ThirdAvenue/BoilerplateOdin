@@ -22,6 +22,8 @@ import { Aluminium1 } from './Materials/Aluminium1'
 import { standard1 } from './Materials/standard1'
 import { standard2 } from './Materials/standard2'
 import { Vadain1 } from './Materials/Vadain1'
+import { BasicColor1 } from './Materials/BasicColor1'
+import { BasicColor2 } from './Materials/BasicColor2'
 
 export class MaterialLibrary {
     public static materials: Map<string, Material> = new Map()
@@ -45,6 +47,8 @@ export class MaterialLibrary {
         FrostedGlassMaterial: FrostedGlassMaterial,
         GlassMaterial: GlassMaterial,
         Aluminium1:Aluminium1,
+        BasicColor1:BasicColor1,
+        BasicColor2:BasicColor2
     }
 
     static async get(materialName: string) {

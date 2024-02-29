@@ -1,4 +1,4 @@
-import { MeshPhongMaterial, MeshPhysicalMaterial, MeshStandardMaterial } from 'three';
+import { MeshBasicMaterial, MeshPhongMaterial, MeshPhysicalMaterial, MeshStandardMaterial } from 'three';
 
 export type MaterialData = {
   type: string;
@@ -8,4 +8,4 @@ export type MaterialData = {
   size: { width: number; height: number };
 };
 
-export type Material = MeshStandardMaterial | MeshPhysicalMaterial | MeshPhongMaterial;
+export type Material = MeshStandardMaterial | MeshPhysicalMaterial | MeshPhongMaterial| MeshBasicMaterial;

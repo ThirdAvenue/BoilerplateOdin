@@ -4,14 +4,14 @@ body {
     overflow: hidden;
     margin: 0px;
 }
-/* .canvasWindow {
+.canvasWindow {
 
     position: relative;
     width: 100vw;
 	height: 100vh;
 	color:rgba(0, 0, 0, 1)
 
-} */
+} 
 .loading-screen {
     position: fixed;
     top: 0;
@@ -25,23 +25,7 @@ body {
     font-size: 24px;
     z-index: 1000; /* Ensure it's above other content */
 }
- /*canvaswindow for integration*/ 
-.canvasWindow {
 
-    position: relative;
-	top:-50px;
-    height: 100%;
-    aspect-ratio: 10/8;
-    overflow: hidden;
-    margin: 0px;
-	background-image: url('https://firebasestorage.googleapis.com/v0/b/boilerplate3d.appspot.com/o/Vadain%2FBackGround1.jpg?alt=media&token=ca43a913-7c2a-4a97-a122-59b616704622');
-	background-position: center;
-	background-repeat: no-repeat;
-	-webkit-background-size: cover;
-	-moz-background-size: cover;
-	-o-background-size: cover;
-	background-size: cover;
-}
 .inputField {
     position: absolute;
     bottom: 25px;

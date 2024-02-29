@@ -1,5 +1,6 @@
 import {
     BoxGeometry,
+    Color,
     DirectionalLight,
     Group,
     HemisphereLight,
@@ -30,6 +31,7 @@ export class MainScene extends Scene {
         this.product = new Group()
         this.uiElements = new Group()
         this.dimensionElements = new Group()
+        this.background= new Color(0xEBEBEB)
     }
     public init() {
         this.scenery.name = 'Scenery'
@@ -44,7 +46,6 @@ export class MainScene extends Scene {
         this.scenery.add(object)
     }
     public addProduct(object: Object3D) {
-        console.log(object)
         this.product.add(object)
         
     }
@@ -82,17 +83,8 @@ export class MainScene extends Scene {
         const floor = new Mesh(new BoxGeometry(100, 0.1, 100), new ShadowMaterial({ color: 0xffffff }))
         floor.position.y = -0.05
         floor.receiveShadow = true
-        this.scenery.add(this.hemisphericLight, this.sunLight, floor)
+        //this.scenery.add(this.hemisphericLight, this.sunLight, floor)
 
-
-        const lightplane = new RectAreaLight(0xffffff, 3, 2, 2.3)
-        lightplane.position.set(-0, 3.1, -3.3)
-        lightplane.rotateY(Math.PI/3)
-        lightplane.rotateY(Math.PI/2)
-        lightplane.rotateY(-Math.PI/9)
-
-
-        this.scenery.add(lightplane);
 
 
 /*         const backgroundImage = new TextureLoader()
