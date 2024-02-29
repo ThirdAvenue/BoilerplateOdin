@@ -1,13 +1,13 @@
 {
-  "name": "Boilerplate",
+  "name": "Odin Boilerplate",
   "version": "0.001",
-  "description": "Boilerplate",
+  "description": "Boilerplate with product example",
   "scripts": {
     "build": "webpack --config ./src/webpack.prod.js",
     "dev": "webpack serve --config ./src/webpack.dev.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Third Avenue",
+  "author": "Renson",
   "license": "ISC",
   "devDependencies": {
     "@types/dat.gui": "^0.7.12",
