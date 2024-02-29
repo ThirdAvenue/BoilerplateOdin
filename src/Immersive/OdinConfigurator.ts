@@ -148,6 +148,7 @@ export class OdinConfigurator {
         }
 
         await this.meshLibrary.load(modeldata)
+        console.log(this._product)
         await this.productAssembler.generateProduct(this._product)
     }
     private async getProductFromDAtabase(id: string) {
@@ -209,7 +210,8 @@ export class OdinConfigurator {
         window.addEventListener('message', (event) => {
             // Check the origin of the sender to ensure it matches expectations for security
             const data = event.data
-            if (this.productAssembler instanceof IntegrationProductAssembler) this.productAssembler.updateMaterial(data)
+            if (data==="rail" && this.productAssembler instanceof IntegrationProductAssembler){this.productAssembler.addOrRemoveRail()}
+            else if (this.productAssembler instanceof IntegrationProductAssembler) this.productAssembler.updateMaterial(data)
         });
     }
     private async setupConfigurator(product: product) {

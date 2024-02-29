@@ -8,6 +8,7 @@ export class SceneLoaderMesh {
     public camera!: PerspectiveCamera | null
     public products: Mesh[] = []
     public mask!: Mesh
+    public railadded: boolean = false
 
     public async load(url: string, products: string[]): Promise<void> {
         const loader = new GLTFLoader();
@@ -21,65 +22,71 @@ export class SceneLoaderMesh {
 
 
     private async loadProduct(products: string[]) {
+        console.log(products)
+        if (products.find((product) => product === "Rail") != undefined) {
+            this.railadded = true
+        }
+        else this.railadded = false
         const material = await MaterialLibrary.get("Vadain1")
         if (material == null) return
         const loader = new TextureLoader();
         let aOmapUrl = ""
-             await getDownloadURL(ref(OdinConfigurator.instance.firebaseStorage, `${OdinConfigurator.instance.firebasePath}CurtainAO2.jpg`)).then((url) => {
-                aOmapUrl = url
-            }) 
+        await getDownloadURL(ref(OdinConfigurator.instance.firebaseStorage, `${OdinConfigurator.instance.firebasePath}CurtainAO2.jpg`)).then((url) => {
+            aOmapUrl = url
+        })
         const texture = await loader.loadAsync(aOmapUrl);
-          material.aoMap = texture;
-         material.aoMap.repeat.x = 1
-         material.aoMap.repeat.y = 1
+        material.aoMap = texture;
+        material.aoMap.repeat.x = 1
+        material.aoMap.repeat.y = 1
 
-         let textureUrl = ""
-         await getDownloadURL(ref(OdinConfigurator.instance.firebaseStorage, `${OdinConfigurator.instance.firebasePath}Curtain1_1_Fabric1_d.jpg`)).then((url) => {
+        let textureUrl = ""
+        await getDownloadURL(ref(OdinConfigurator.instance.firebaseStorage, `${OdinConfigurator.instance.firebasePath}Curtain1_1_Fabric1_d.jpg`)).then((url) => {
             textureUrl = url
-        }) 
+        })
         const diffusetexture = await loader.loadAsync(textureUrl);
-        diffusetexture.colorSpace= SRGBColorSpace
+        diffusetexture.colorSpace = SRGBColorSpace
         material.map = diffusetexture;
         material.map.repeat.x = 1;
         material.map.wrapS = RepeatWrapping;
         material.map.repeat.y = 1;
         material.map.wrapT = RepeatWrapping;
-        material.needsUpdate=true
+        material.needsUpdate = true
 
         let textureUrlTrans = ""
         await getDownloadURL(ref(OdinConfigurator.instance.firebaseStorage, `${OdinConfigurator.instance.firebasePath}Curtain1_1_Fabric1_a.jpg`)).then((url) => {
             textureUrlTrans = url
-       }) 
-       const transtexture = await loader.loadAsync(textureUrlTrans);
-       transtexture.colorSpace= SRGBColorSpace
-       material.alphaMap = transtexture;
-       material.alphaMap.repeat.x = 1;
-       material.alphaMap.wrapS = RepeatWrapping;
-       material.alphaMap.repeat.y = 1;
-       material.alphaMap.wrapT = RepeatWrapping;
-       material.needsUpdate=true
+        })
+        const transtexture = await loader.loadAsync(textureUrlTrans);
+        transtexture.colorSpace = SRGBColorSpace
+        material.alphaMap = transtexture;
+        material.alphaMap.repeat.x = 1;
+        material.alphaMap.wrapS = RepeatWrapping;
+        material.alphaMap.repeat.y = 1;
+        material.alphaMap.wrapT = RepeatWrapping;
+        material.needsUpdate = true
 
-        
-        
-        
-        
-        
 
-       
-
+        const metalMaterial = await MaterialLibrary.get("AluminiumMaterial2")
         for (const child of this.scene.scene.children) {
             if (child instanceof Mesh) {
                 child.material = material
-                if (child instanceof Mesh && child.name == "Curtain2") {
+                if (child instanceof Mesh && child.name == "Curtain2" && this.railadded === false) {
                     this.products.push(child)
                 }
-                 if (child instanceof Mesh && child.name == "Curtain1") {
+                if (child instanceof Mesh && child.name == "Curtain1") {
                     this.products.push(child)
                 }
-               /*  if (child instanceof Mesh && child.name === "Mask") {
-                    child.material = new MeshBasicMaterial({ opacity: 1 })
-                    this.products.push(child)
-                }  */
+                if (child instanceof Mesh && child.name == "MDL_Horder" && this.railadded === true) {
+                    if (metalMaterial) {
+                        this.products.push(child)
+                        child.material = metalMaterial
+                    }
+
+                }
+                /*  if (child instanceof Mesh && child.name === "Mask") {
+                     child.material = new MeshBasicMaterial({ opacity: 1 })
+                     this.products.push(child)
+                 }  */
             }
         }
 

@@ -10,6 +10,7 @@ export class IntegrationProductAssembler {
     public object: Group = new Group()
     public maskObject: Group = new Group()
     private fabricnr: number = 1
+    private addrail: boolean = false
 
     public async generateProduct(product: product): Promise<void> {
         //Build the parts, this can be done in a seperate "Buildstrategy but for this demo it is done right here in the assembler"
@@ -20,7 +21,14 @@ export class IntegrationProductAssembler {
         /*  this.object.clear()
          await this.buildProduct(product) */
     }
-    public async updateMaterial(data:string) {
+    public async addOrRemoveRail() {
+        if (this.addrail === false) this.addrail = true;
+        else this.addrail = false;
+        this.object.clear()
+        this.generateProduct(OdinConfigurator.instance.productmodel)
+
+    }
+    public async updateMaterial(data: string) {
 
         const material = await MaterialLibrary.get("Vadain1")
         this.fabricnr = parseInt(data)
@@ -46,14 +54,14 @@ export class IntegrationProductAssembler {
             let textureUrlTrans = ""
             await getDownloadURL(ref(OdinConfigurator.instance.firebaseStorage, `${OdinConfigurator.instance.firebasePath}Curtain1_1_Fabric${this.fabricnr}_a.jpg`)).then((url) => {
                 textureUrlTrans = url
-           }) 
-           const transtexture = await loader.loadAsync(textureUrlTrans);
-           transtexture.colorSpace= SRGBColorSpace
-           material.alphaMap = transtexture;
-           material.alphaMap.repeat.x = 1;
-           material.alphaMap.wrapS = RepeatWrapping;
-           material.alphaMap.repeat.y = 1;
-           material.alphaMap.wrapT = RepeatWrapping;
+            })
+            const transtexture = await loader.loadAsync(textureUrlTrans);
+            transtexture.colorSpace = SRGBColorSpace
+            material.alphaMap = transtexture;
+            material.alphaMap.repeat.x = 1;
+            material.alphaMap.wrapS = RepeatWrapping;
+            material.alphaMap.repeat.y = 1;
+            material.alphaMap.wrapT = RepeatWrapping;
         }
 
     }
@@ -65,7 +73,9 @@ export class IntegrationProductAssembler {
             downloadUrl = url;
         })
         const scene = new SceneLoaderMesh()
-        await scene.load(downloadUrl, ["Curtain1", "Curtain2"])
+        if (this.addrail == true) await scene.load(downloadUrl, ["Curtain1", "Curtain2", "Rail"])
+        else await scene.load(downloadUrl, ["Curtain1", "Curtain2"])
+
         for (const product of scene.products) {
             if (product.name != "Mask") this.object.add(product)
             //if (product.name === "Mask")this.maskObject.add(product);
