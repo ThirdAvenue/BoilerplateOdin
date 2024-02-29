@@ -4,9 +4,11 @@ import { OrbitCamera } from './OrbitCamera'
 import Stats from 'three/examples/jsm/libs/stats.module.js'
 import { OdinConfigurator } from '../OdinConfigurator'
 import { Composer } from './Composer'
+import { getDownloadURL, ref } from 'firebase/storage'
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
+import { MeshLibrary } from '../Libraries'
 import { GUI } from 'dat.gui'
 import { GTAOPass } from 'three/examples/jsm/postprocessing/GTAOPass'
-import { WigleCamera } from './WigleCamera'
 
 export class Renderer {
     private _renderer!: WebGLRenderer
@@ -42,7 +44,7 @@ export class Renderer {
         this.maskScene = new Scene()
         this._renderer.shadowMap.enabled = true
         this._renderer.shadowMap.type = PCFShadowMap
-        // this._renderer.toneMapping = CineonToneMapping
+        this._renderer.toneMapping = CineonToneMapping
         this._renderer.toneMappingExposure = 2.2
         this._renderer.outputColorSpace = SRGBColorSpace
         this._renderer.setAnimationLoop(this.render.bind(this))
@@ -62,8 +64,6 @@ export class Renderer {
 
         await this.cameraSetup(clientWidth, clientHeight, cameraSettings)
         window.addEventListener('resize', this.onWindowResize)
-        window.addEventListener('mousemove', this.cameraMovement)
-
         //provide own rendertarget to the composer 
         const renderTarget = new WebGLRenderTarget(
             800,
@@ -146,26 +146,42 @@ export class Renderer {
 
     }
     private async cameraSetup(clientWidth: number, clientHeight: number, cameraSettings: Array<any>) {
-        Renderer._camera = new WigleCamera(60, this.canvas, 0.01, 100, new Vector3(0, 1.5, 7), new Vector3(0, 1.5, 0))
-        Renderer._camera.aspect = clientWidth / clientHeight
-        Renderer._camera.updateProjectionMatrix()
+
+        if (OdinConfigurator.instance.productAssembler) {
+            const camera = await OdinConfigurator.instance.productAssembler.object.traverse((child) => {
+                if (child instanceof Camera) {
+                    return child
+                }
+            })
+            if (camera != null) {
+                Renderer._camera = camera
+                Renderer._camera.updateProjectionMatrix()
+
+            }
+        }
+        let CamPos = new Vector3(0, 0, 0)
+        let TargetPos = new Vector3(0, 0, 0)
+        if (OdinConfigurator.instance.typeOfConfigurator === 'Configurator') {
+            CamPos = new Vector3(cameraSettings[0].xCam, cameraSettings[0].yCam, cameraSettings[0].zCam)
+            TargetPos = new Vector3(cameraSettings[0].xLook, cameraSettings[0].yLook, cameraSettings[0].zLook)
+        }
 
 
-    }
-    private cameraMovement(event: MouseEvent) {
-        let sensitivity = 2 ; // Adjust this value based on desired sensitivity
+        if (Renderer._camera == null) {
+            Renderer._camera = new OrbitCamera(60, this.canvas, 0.01, 100, CamPos, TargetPos)
+            if (Renderer._camera instanceof OrbitCamera) {
 
-        let mouseX = (event.clientX / window.innerWidth) * 2 - 1;
-        let mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
-    
-        // Adjust camera position based on mouse position
-        // This example only moves the camera along the X-axis
-        Renderer._camera.position.x += (mouseX - Renderer._camera.position.x) / sensitivity;
-       // Renderer._camera.position.y += (mouseY - Renderer._camera.position.y) / sensitivity;
-        Renderer._camera.lookAt(new Vector3(0, 1.5, 0))
+                Renderer._camera.aspect = clientWidth / clientHeight
+                Renderer._camera.updateProjectionMatrix()
+            }
+        }
+
+
     }
     private render() {
-
+        if (Renderer._camera instanceof OrbitCamera) {
+            Renderer._camera.controls.update();
+        }
 
         //updates for debugreasons
         if (OdinConfigurator.instance.debugMode === true) {

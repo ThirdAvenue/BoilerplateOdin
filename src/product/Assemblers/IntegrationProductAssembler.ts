@@ -1,7 +1,7 @@
 import { Camera, Group, LinearSRGBColorSpace, MeshPhysicalMaterial, MeshStandardMaterial, RepeatWrapping, SRGBColorSpace, TextureLoader, sRGBEncoding } from 'three'
 import { AbstractProductAssembler, MaterialLibrary, MeshLibrary, OdinConfigurator, Renderer, model } from '../../Immersive'
 import { productMesh } from '../Elements/productMesh'
-import { product } from '../controllRoomApp'
+import { product } from '../productX'
 import { getDownloadURL, ref } from 'firebase/storage'
 import { SceneLoaderMesh } from '../Elements/SceneLoaderMesh'
 

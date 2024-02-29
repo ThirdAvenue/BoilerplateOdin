@@ -1,7 +1,7 @@
 {
-  "name": "Barco Controllroom",
+  "name": "Boilerplate",
   "version": "0.001",
-  "description": "BArco controll",
+  "description": "Boilerplate",
   "scripts": {
     "build": "webpack --config ./src/webpack.prod.js",
     "dev": "webpack serve --config ./src/webpack.dev.js",

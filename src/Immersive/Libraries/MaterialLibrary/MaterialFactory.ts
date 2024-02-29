@@ -1,4 +1,4 @@
-import { MeshBasicMaterial, MeshPhongMaterial, MeshPhysicalMaterial, RepeatWrapping, sRGBEncoding } from 'three';
+import { MeshPhongMaterial, MeshPhysicalMaterial, RepeatWrapping, sRGBEncoding } from 'three';
 import { TextureLoader } from '../../Utils/TextureLoader';
 import { Material, MaterialData } from './MaterialData';
 
@@ -44,12 +44,12 @@ export class MaterialFactory {
   private static async createMeshBasicMaterial(data: MaterialData) {
     if (data.textures) {
       const textures = await TextureLoader.loadTextures(data.textures);
-      const material = new MeshBasicMaterial({ ...data.properties, ...textures });
+      const material = new MeshPhysicalMaterial({ ...data.properties, ...textures });
       material.name = data.name;
       material.userData = data.size;
       return material;
     } else {
-      const material = new MeshBasicMaterial({ ...data.properties });
+      const material = new MeshPhysicalMaterial({ ...data.properties });
       material.name = data.name;
       return material;
     }

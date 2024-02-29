@@ -2,7 +2,7 @@ import { Group, Mesh, Vector3 } from 'three'
 import { AbstractProductAssembler, MaterialLibrary, MeshLibrary, OdinConfigurator, model } from '../../Immersive'
 import { productMesh } from '../Elements/productMesh'
 import { buildBoxMesh } from '../Utils/buildBoxMesh'
-import { product } from '../controllRoomApp'
+import { product } from '../productX'
 import { getSizeScreen, getWallPieces } from '../../partsModel/Builders/videoWall'
 
 export class ModuleProductAssembler extends AbstractProductAssembler {
@@ -25,10 +25,7 @@ export class ModuleProductAssembler extends AbstractProductAssembler {
     public async generateProduct(product: product): Promise<void> {
         console.log(product)
         //just as a test 
-        this.typeOfScreen = product.walls[0].type
-        this.rows = product.walls[0].rows
-        this.columns = product.walls[0].columns
-
+       
 
 
         await this.buildProduct()

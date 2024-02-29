@@ -20,7 +20,7 @@ const urlParams = new URLSearchParams(new URL(currentUrl).search);
 const productId = urlParams.get('productID');
 
 if (productId) {
-    configurator.init(new IntegrationProductAssembler(), productId, '.canvasWindow', "Vadain")
+    configurator.init(new ModuleProductAssembler(), productId, '.canvasWindow', ProductData)
 }
 
 //buttons 
@@ -34,4 +34,3 @@ document.addEventListener('DOMContentLoaded', (event) => {
     }
 }
 );
-
