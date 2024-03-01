@@ -42,6 +42,7 @@ export class SceneLoaderMesh {
             material.aoMap.repeat.x = 1
             material.aoMap.repeat.y = 1
         }
+        else material.aoMap = null
 
         let textureUrl = ""
         await getDownloadURL(ref(OdinConfigurator.instance.firebaseStorage, `${OdinConfigurator.instance.firebasePath}Curtain1_1_Fabric1_d.jpg`)).then((url) => {
