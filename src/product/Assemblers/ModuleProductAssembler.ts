@@ -25,7 +25,7 @@ export class ModuleProductAssembler extends AbstractProductAssembler {
     public async generateProduct(product: product): Promise<void> {
         console.log(product)
         //just as a test 
-       
+    
 
 
         await this.buildProduct()

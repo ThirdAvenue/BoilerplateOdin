@@ -12,6 +12,7 @@ export class IntegrationProductAssembler {
     private fabricnr: number = 1
     private addrail: boolean = false
     private curtainType: number = 1
+    private camloaded = false;
 
     public async generateProduct(product: product): Promise<void> {
         //Build the parts, this can be done in a seperate "Buildstrategy but for this demo it is done right here in the assembler"
@@ -97,9 +98,10 @@ export class IntegrationProductAssembler {
 
         //this.object.add(scene.mask)
         //OdinConfigurator.instance.renderer.maskScene.add(scene.mask)
-        if (scene.camera != null) {
+        if (scene.camera != null && this.camloaded===false) {
             this.object.add(scene.camera)
             Renderer._camera = scene.camera
+            this.camloaded=true
         }
 
 
