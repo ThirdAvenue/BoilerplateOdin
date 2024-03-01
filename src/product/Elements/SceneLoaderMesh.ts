@@ -23,6 +23,8 @@ export class SceneLoaderMesh {
 
     private async loadProduct(products: string[]) {
         console.log(products)
+        const curtain1 = products[0]
+        const curtain2 = products[1]
         if (products.find((product) => product === "Rail") != undefined) {
             this.railadded = true
         }
@@ -70,10 +72,10 @@ export class SceneLoaderMesh {
         for (const child of this.scene.scene.children) {
             if (child instanceof Mesh) {
                 child.material = material
-                if (child instanceof Mesh && child.name == "Curtain2" && this.railadded === false) {
+                if (child instanceof Mesh && child.name == curtain2 && this.railadded === false) {
                     this.products.push(child)
                 }
-                if (child instanceof Mesh && child.name == "Curtain1") {
+                if (child instanceof Mesh && child.name == curtain1) {
                     this.products.push(child)
                 }
                 if (child instanceof Mesh && child.name == "MDL_Horder" && this.railadded === true) {

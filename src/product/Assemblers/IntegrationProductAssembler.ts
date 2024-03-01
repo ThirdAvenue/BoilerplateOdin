@@ -11,6 +11,7 @@ export class IntegrationProductAssembler {
     public maskObject: Group = new Group()
     private fabricnr: number = 1
     private addrail: boolean = false
+    private curtainType: number = 1
 
     public async generateProduct(product: product): Promise<void> {
         //Build the parts, this can be done in a seperate "Buildstrategy but for this demo it is done right here in the assembler"
@@ -24,6 +25,13 @@ export class IntegrationProductAssembler {
     public async addOrRemoveRail() {
         if (this.addrail === false) this.addrail = true;
         else this.addrail = false;
+        this.object.clear()
+        this.generateProduct(OdinConfigurator.instance.productmodel)
+
+    }
+    public async changeCurtain(type: string) {
+        if (type=="curtain2") this.curtainType = 2;
+        else this.curtainType = 1;
         this.object.clear()
         this.generateProduct(OdinConfigurator.instance.productmodel)
 
@@ -68,13 +76,19 @@ export class IntegrationProductAssembler {
 
     private async buildProduct(product: product): Promise<void> {
         let downloadUrl = ""
-        console.log('build product')
         await getDownloadURL(ref(OdinConfigurator.instance.firebaseStorage, `${OdinConfigurator.instance.firebasePath}scene.glb`)).then((url) => {
             downloadUrl = url;
         })
         const scene = new SceneLoaderMesh()
-        if (this.addrail == true) await scene.load(downloadUrl, ["Curtain1", "Curtain2", "Rail"])
-        else await scene.load(downloadUrl, ["Curtain1", "Curtain2"])
+        let curtain1 = "Curtain1"
+        let curtain2 = "Curtain2"
+        if (this.curtainType == 2) {
+            curtain1="Curtain3"
+            curtain2="Curtain4"
+        }
+
+        if (this.addrail == true) await scene.load(downloadUrl, [curtain1, curtain2, "Rail"])
+        else await scene.load(downloadUrl, [curtain1, curtain2])
 
         for (const product of scene.products) {
             if (product.name != "Mask") this.object.add(product)

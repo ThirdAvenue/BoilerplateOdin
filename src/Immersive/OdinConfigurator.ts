@@ -96,7 +96,6 @@ export class OdinConfigurator {
         }
         else this._renderer = new Renderer()
         await this._renderer.mount(this.canvas, this.cameraSettings)
-        console.log(this.productAssembler.object)
         this.renderer.scene.addProduct(this.productAssembler.object)
 
         //check if this.preoductAssembler is type of IntegrationProductAssembler
@@ -212,6 +211,8 @@ export class OdinConfigurator {
             console.log(event.data)
             const data = event.data
             if (data === "rail" && this.productAssembler instanceof IntegrationProductAssembler) { this.productAssembler.addOrRemoveRail() }
+            else if (data === "curtain1" && this.productAssembler instanceof IntegrationProductAssembler) { this.productAssembler.changeCurtain(data) }
+            else if (data === "curtain2" && this.productAssembler instanceof IntegrationProductAssembler) { this.productAssembler.changeCurtain(data) }
             else if (this.productAssembler instanceof IntegrationProductAssembler) this.productAssembler.updateMaterial(data)
         });
     }

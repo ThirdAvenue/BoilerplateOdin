@@ -147,34 +147,10 @@ export class Renderer {
     }
     private async cameraSetup(clientWidth: number, clientHeight: number, cameraSettings: Array<any>) {
 
-        if (OdinConfigurator.instance.productAssembler) {
-            const camera = await OdinConfigurator.instance.productAssembler.object.traverse((child) => {
-                if (child instanceof Camera) {
-                    return child
-                }
-            })
-            if (camera != null) {
-                Renderer._camera = camera
-                Renderer._camera.updateProjectionMatrix()
-
-            }
-        }
-        let CamPos = new Vector3(0, 0, 0)
-        let TargetPos = new Vector3(0, 0, 0)
-        if (OdinConfigurator.instance.typeOfConfigurator === 'Configurator') {
-            CamPos = new Vector3(cameraSettings[0].xCam, cameraSettings[0].yCam, cameraSettings[0].zCam)
-            TargetPos = new Vector3(cameraSettings[0].xLook, cameraSettings[0].yLook, cameraSettings[0].zLook)
-        }
-
-
-        if (Renderer._camera == null) {
-            Renderer._camera = new OrbitCamera(60, this.canvas, 0.01, 100, CamPos, TargetPos)
-            if (Renderer._camera instanceof OrbitCamera) {
-
-                Renderer._camera.aspect = clientWidth / clientHeight
-                Renderer._camera.updateProjectionMatrix()
-            }
-        }
+        if (OdinConfigurator.instance.renderer instanceof Renderer) OdinConfigurator.instance.renderer._renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+        if (OdinConfigurator.instance.renderer instanceof Renderer) OdinConfigurator.instance.renderer._renderer.setSize(clientWidth, clientHeight)
+        Renderer._camera.aspect = clientWidth / clientHeight;
+        Renderer._camera.updateProjectionMatrix();
 
 
     }
