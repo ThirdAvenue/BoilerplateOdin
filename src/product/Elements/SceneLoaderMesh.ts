@@ -37,9 +37,11 @@ export class SceneLoaderMesh {
             aOmapUrl = url
         })
         const texture = await loader.loadAsync(aOmapUrl);
-        material.aoMap = texture;
-        material.aoMap.repeat.x = 1
-        material.aoMap.repeat.y = 1
+        if (curtain1 == "Curtain1" || curtain1=="Curtain2") {
+            material.aoMap = texture;
+            material.aoMap.repeat.x = 1
+            material.aoMap.repeat.y = 1
+        }
 
         let textureUrl = ""
         await getDownloadURL(ref(OdinConfigurator.instance.firebaseStorage, `${OdinConfigurator.instance.firebasePath}Curtain1_1_Fabric1_d.jpg`)).then((url) => {
