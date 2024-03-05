@@ -17,6 +17,7 @@ export class IntegrationProductAssembler {
     public async generateProduct(product: product): Promise<void> {
         //Build the parts, this can be done in a seperate "Buildstrategy but for this demo it is done right here in the assembler"
         await this.buildProduct(product)
+        this.updateMaterial(this.fabricnr.toString())
     }
     public async updateProduct(product: product): Promise<void> {
         //clear the object (if you have granual controll: add this)

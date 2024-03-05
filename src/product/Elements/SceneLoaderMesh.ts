@@ -22,7 +22,6 @@ export class SceneLoaderMesh {
 
 
     private async loadProduct(products: string[]) {
-        console.log(products)
         const curtain1 = products[0]
         const curtain2 = products[1]
         if (products.find((product) => product === "Rail") != undefined) {
@@ -53,6 +52,7 @@ export class SceneLoaderMesh {
         material.map.repeat.y = 1;
         material.map.wrapT = RepeatWrapping;
         material.needsUpdate = true
+
 
         let textureUrlTrans = ""
         await getDownloadURL(ref(OdinConfigurator.instance.firebaseStorage, `${OdinConfigurator.instance.firebasePath}Curtain1_1_Fabric1_a.jpg`)).then((url) => {
