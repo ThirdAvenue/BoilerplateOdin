@@ -60,8 +60,8 @@ export class IntegrationProductAssembler {
             material.map.wrapT = RepeatWrapping;
             material.needsUpdate = true
             if (this.fabricnr>2){
-                material.map.repeat.x = 9;
-                material.map.repeat.y = 9;
+                material.map.repeat.x = 5;
+                material.map.repeat.y = 5;
             }
 
             let textureUrlTrans = ""
@@ -76,8 +76,8 @@ export class IntegrationProductAssembler {
             material.alphaMap.repeat.y = 1;
             material.alphaMap.wrapT = RepeatWrapping;
             if (this.fabricnr>2){
-                material.alphaMap.repeat.x = 9;
-                material.alphaMap.repeat.y = 9;
+                material.alphaMap.repeat.x = 5;
+                material.alphaMap.repeat.y = 5;
             }
         }
 
