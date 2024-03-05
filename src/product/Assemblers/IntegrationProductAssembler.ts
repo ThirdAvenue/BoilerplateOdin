@@ -41,12 +41,11 @@ export class IntegrationProductAssembler {
 
         const material = await MaterialLibrary.get("Vadain1")
         this.fabricnr = parseInt(data)
-
         if (material == null) return
         if (material instanceof MeshPhysicalMaterial) {
 
             const loader = new TextureLoader();
-
+            
             let textureUrl = ""
             await getDownloadURL(ref(OdinConfigurator.instance.firebaseStorage, `${OdinConfigurator.instance.firebasePath}Curtain1_1_Fabric${this.fabricnr}_d.jpg`)).then((url) => {
                 textureUrl = url
@@ -59,6 +58,10 @@ export class IntegrationProductAssembler {
             material.map.repeat.y = 1;
             material.map.wrapT = RepeatWrapping;
             material.needsUpdate = true
+            if (this.fabricnr>2){
+                material.map.repeat.x = 9;
+                material.map.repeat.y = 9;
+            }
 
             let textureUrlTrans = ""
             await getDownloadURL(ref(OdinConfigurator.instance.firebaseStorage, `${OdinConfigurator.instance.firebasePath}Curtain1_1_Fabric${this.fabricnr}_a.jpg`)).then((url) => {
@@ -71,6 +74,10 @@ export class IntegrationProductAssembler {
             material.alphaMap.wrapS = RepeatWrapping;
             material.alphaMap.repeat.y = 1;
             material.alphaMap.wrapT = RepeatWrapping;
+            if (this.fabricnr>2){
+                material.alphaMap.repeat.x = 9;
+                material.alphaMap.repeat.y = 9;
+            }
         }
 
     }
