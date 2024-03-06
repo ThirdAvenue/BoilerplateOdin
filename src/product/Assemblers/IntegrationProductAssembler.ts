@@ -84,7 +84,7 @@ export class IntegrationProductAssembler {
             await getDownloadURL(ref(OdinConfigurator.instance.firebaseStorage, `${OdinConfigurator.instance.firebasePath}Curtain1_1_Fabric${this.fabricnr}_n.jpg`)).then((url) => {
                 textureUrlTrans = url
             })
-            const normaltexture = await loader.loadAsync(textureUrlNormal);
+           /*  const normaltexture = await loader.loadAsync(textureUrlNormal);
             normaltexture.colorSpace = SRGBColorSpace
             material.normalMap = normaltexture;
             material.normalMap.repeat.x = 1;
@@ -95,7 +95,7 @@ export class IntegrationProductAssembler {
             if (this.fabricnr>2){
                 material.normalMap.repeat.x = 5;
                 material.normalMap.repeat.y = 5;
-            }
+            } */
         }
 
     }
