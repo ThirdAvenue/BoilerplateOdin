@@ -91,7 +91,7 @@ export class IntegrationProductAssembler {
             material.normalMap.wrapS = RepeatWrapping;
             material.normalMap.repeat.y = 1;
             material.normalMap.wrapT = RepeatWrapping;
-            material.normalScale = new Vector2(1,1);
+            material.normalScale = new Vector2(5,5); // affects the scale of the normal
             if (this.fabricnr>2){
                 material.normalMap.repeat.x = 5;
                 material.normalMap.repeat.y = 5;
