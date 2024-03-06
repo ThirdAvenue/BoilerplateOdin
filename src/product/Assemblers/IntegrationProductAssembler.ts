@@ -79,7 +79,7 @@ export class IntegrationProductAssembler {
                 material.alphaMap.repeat.x = 5;
                 material.alphaMap.repeat.y = 5;
             }
-
+            //test
             let textureUrlNormal = ""
             await getDownloadURL(ref(OdinConfigurator.instance.firebaseStorage, `${OdinConfigurator.instance.firebasePath}Curtain1_1_Fabric${this.fabricnr}_n.jpg`)).then((url) => {
                 textureUrlTrans = url
