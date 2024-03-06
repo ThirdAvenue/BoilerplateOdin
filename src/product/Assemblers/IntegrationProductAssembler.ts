@@ -54,9 +54,9 @@ export class IntegrationProductAssembler {
             const diffusetexture = await loader.loadAsync(textureUrl);
             diffusetexture.colorSpace = SRGBColorSpace
             material.map = diffusetexture;
-            material.map.repeat.x = 1;
+            material.map.repeat.x = 2.2;
             material.map.wrapS = RepeatWrapping;
-            material.map.repeat.y = 1;
+            material.map.repeat.y = 2.2;
             material.map.wrapT = RepeatWrapping;
             material.needsUpdate = true
             if (this.fabricnr>2){
@@ -71,25 +71,25 @@ export class IntegrationProductAssembler {
             const transtexture = await loader.loadAsync(textureUrlTrans);
             transtexture.colorSpace = SRGBColorSpace
             material.alphaMap = transtexture;
-            material.alphaMap.repeat.x = 1;
+            material.alphaMap.repeat.x = 2.2;
             material.alphaMap.wrapS = RepeatWrapping;
-            material.alphaMap.repeat.y = 1;
+            material.alphaMap.repeat.y = 2.2;
             material.alphaMap.wrapT = RepeatWrapping;
             if (this.fabricnr>2){
                 material.alphaMap.repeat.x = 5;
                 material.alphaMap.repeat.y = 5;
             }
             //test
-            let textureUrlNormal = ""
+           /*  let textureUrlNormal = ""
             await getDownloadURL(ref(OdinConfigurator.instance.firebaseStorage, `${OdinConfigurator.instance.firebasePath}Curtain1_1_Fabric${this.fabricnr}_n.jpg`)).then((url) => {
                 textureUrlTrans = url
             })
-           /*  const normaltexture = await loader.loadAsync(textureUrlNormal);
+            const normaltexture = await loader.loadAsync(textureUrlNormal);
             normaltexture.colorSpace = SRGBColorSpace
             material.normalMap = normaltexture;
-            material.normalMap.repeat.x = 1;
+            material.normalMap.repeat.x = 4;
             material.normalMap.wrapS = RepeatWrapping;
-            material.normalMap.repeat.y = 1;
+            material.normalMap.repeat.y = 4;
             material.normalMap.wrapT = RepeatWrapping;
             material.normalScale = new Vector2(1,1); // affects the scale of the normal
             if (this.fabricnr>2){
