@@ -1,4 +1,4 @@
-import { Camera, Group, LinearSRGBColorSpace, MeshPhysicalMaterial, MeshStandardMaterial, RepeatWrapping, SRGBColorSpace, TextureLoader, sRGBEncoding } from 'three'
+import { Camera, Group, LinearSRGBColorSpace, MeshPhysicalMaterial, MeshStandardMaterial, RepeatWrapping, SRGBColorSpace, TextureLoader, Vector2, sRGBEncoding } from 'three'
 import { AbstractProductAssembler, MaterialLibrary, MeshLibrary, OdinConfigurator, Renderer, model } from '../../Immersive'
 import { productMesh } from '../Elements/productMesh'
 import { product } from '../productX'
@@ -78,6 +78,23 @@ export class IntegrationProductAssembler {
             if (this.fabricnr>2){
                 material.alphaMap.repeat.x = 5;
                 material.alphaMap.repeat.y = 5;
+            }
+
+            let textureUrlNormal = ""
+            await getDownloadURL(ref(OdinConfigurator.instance.firebaseStorage, `${OdinConfigurator.instance.firebasePath}Curtain1_1_Fabric${this.fabricnr}_n.jpg`)).then((url) => {
+                textureUrlTrans = url
+            })
+            const normaltexture = await loader.loadAsync(textureUrlNormal);
+            normaltexture.colorSpace = SRGBColorSpace
+            material.normalMap = normaltexture;
+            material.normalMap.repeat.x = 1;
+            material.normalMap.wrapS = RepeatWrapping;
+            material.normalMap.repeat.y = 1;
+            material.normalMap.wrapT = RepeatWrapping;
+            material.normalScale = new Vector2(1,1);
+            if (this.fabricnr>2){
+                material.normalMap.repeat.x = 5;
+                material.normalMap.repeat.y = 5;
             }
         }
 

@@ -22,7 +22,7 @@ export const Vadain1: MaterialData = {
         map: '../Assets/0leCY.jpg',
         alphaMap: '../Assets/CurtainTransp.jpg',
         bumpMap: '../Assets/CurtainTransp.jpg',
-       // aoMap: '../Assets/CurtainAO.jpg'  
+        normalMap: '../Assets/YourNormalMap.jpg',
         // normalMap:''
     },
 };
