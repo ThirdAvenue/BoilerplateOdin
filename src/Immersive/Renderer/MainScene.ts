@@ -85,7 +85,7 @@ export class MainScene extends Scene {
         this.scenery.add(this.hemisphericLight, this.sunLight, floor)
 
 
-        const lightplane = new RectAreaLight(0xffffff, 3, 2, 2.3)
+        const lightplane = new RectAreaLight(0xffffff, 2, 2, 2.3)
         lightplane.position.set(-0, 3.1, -3.3)
         lightplane.rotateY(Math.PI/3)
         lightplane.rotateY(Math.PI/2)
@@ -94,6 +94,12 @@ export class MainScene extends Scene {
 
         this.scenery.add(lightplane);
 
+        const lightplane2 = new RectAreaLight(0xffffff, 3, 2, 2.3)
+        const helper = new RectAreaLightHelper(lightplane2)
+        lightplane2.position.set(0, 3, 3.3)
+        lightplane2.rotateY(-1.4)
+      
+        this.scenery.add(lightplane2);
 
 /*         const backgroundImage = new TextureLoader()
         backgroundImage.load('Assets/BackGround1.jpg', function (texture) {
