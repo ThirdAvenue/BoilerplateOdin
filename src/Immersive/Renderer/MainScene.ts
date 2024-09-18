@@ -92,7 +92,7 @@ export class MainScene extends Scene {
 
 
 
-         const lightplane = new RectAreaLight(0xffffff, 0.2, 2, 2.3)
+         const lightplane = new RectAreaLight(0xffffff, 2, 2, 2.3)
         lightplane.position.set(-3, 0, -2.3)
     
         lightplane.rotateY(-Math.PI/2)

@@ -88,6 +88,17 @@ export class ModuleProductAssembler extends AbstractProductAssembler {
                     
 
                 }
+                //for vadain test 
+                if (model.name === 'curtain') {
+                    model.castShadow = true
+                    const alphamap = '/Assets/VadainTest_Curtain_o.jpg'
+                    const alphaTexture = new TextureLoader().load(alphamap)
+                    material!.alphaMap = alphaTexture
+                    material!.alphaTest = 0.4
+                    material!.needsUpdate = true
+
+
+                }
                 if (textureMap && textureMap != 'None') {
                     let diffuseUrl = ''
                     let bumpUrl = ''
