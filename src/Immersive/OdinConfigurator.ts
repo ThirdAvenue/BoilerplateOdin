@@ -11,17 +11,15 @@ import { product } from '../product/productX'
 import { IntegrationProductAssembler } from '../product/Assemblers/IntegrationProductAssembler'
 import { v4 as uuidv4 } from 'uuid'
 import { Vector3 } from 'three'
-import { IntegrationRenderer } from './Renderer/IntegrationRenderer'
 
 
-export type configuratorType = 'Configurator' | 'Integration' | 'Custom'
+type configuratorType = 'Configurator' | 'Integration' | 'Custom'
 
 export class OdinConfigurator {
-    private _renderer!: Renderer | IntegrationRenderer
-    get renderer(): Renderer | IntegrationRenderer {
+    private _renderer!: Renderer
+    get renderer(): Renderer {
         return this._renderer
     }
-
     public typeOfConfigurator: configuratorType = "Integration"
     public productmodel!: product
     public static instance: OdinConfigurator
@@ -59,9 +57,8 @@ export class OdinConfigurator {
         assembler: AbstractProductAssembler | IntegrationProductAssembler,
         id: string,
         canvasName: string,
-        meshes: MeshInfo[],
+        meshes: MeshInfo[]
     ): Promise<void> {
-
         const product = await this.getProductFromDAtabase(id)
 
         const firebaseConfig = {
@@ -79,35 +76,19 @@ export class OdinConfigurator {
 
         this._product = structuredClone(product)
         this.meshLibrary = new MeshLibrary()
-        if (this.typeOfConfigurator === "Integration") {
-            
-            this.productAssembler = new IntegrationProductAssembler()
-        }
-        else { this.productAssembler = assembler }
+        this.productAssembler = assembler
         this._eventDispatcher = new EventDispatcher()
         // create the canvas
         this.canvas = document.querySelector(canvasName) as HTMLDivElement
         await this.createMeshesInfo(product.customer, product.model, 1)
         await this.loadData(product.id, this.meshInfo)
         await this.setUI(product.customer)
-        if (this.typeOfConfigurator === "Configurator") {
-            await this.cameraSetup(product.customer)
-            this._renderer = new Renderer()
-        }
-        else this._renderer = new Renderer()
+        await this.cameraSetup(product.customer)
+        this._renderer = new Renderer()
         await this._renderer.mount(this.canvas, this.cameraSettings)
-        this.renderer.scene.addProduct(this.productAssembler.object)
+        this.renderer.scene.addProduct(assembler.object)
 
-        //check if this.preoductAssembler is type of IntegrationProductAssembler
-        /*         if (this.productAssembler instanceof IntegrationProductAssembler) {
-                    this.renderer.maskScene.add(this.productAssembler.maskObject)
-                } */
-        //pruduct is loaded, remove loading screen 
 
-        const loadingScreen = document.getElementById('loadingScreen');
-        if (loadingScreen) {
-            loadingScreen.style.display = 'none';
-        }
     }
     /**
      * @param next new model that needs to be loaded. 
@@ -156,7 +137,6 @@ export class OdinConfigurator {
         const response = await fetch(url);
         const data = await response.json();
         const productData = data.find((product: { id: string }) => product.id === id);
-        this.typeOfConfigurator = productData?.type as configuratorType;
         const productModel = productData?.model;
         const customer = productData?.customer;
         const product: product = {
@@ -200,39 +180,24 @@ export class OdinConfigurator {
         document.addEventListener('keydown', async (e) => {
             if (e.code === 'KeyS') {
                 console.log(this.renderer.scene)
-            }
-            if (e.code === 'KeyC') {
-                console.log("changematerial")
-                if (this.productAssembler instanceof IntegrationProductAssembler) this.productAssembler.updateMaterial("2")
+                console.log(Renderer._camera)
             }
         })
-        window.addEventListener('message', (event) => {
-            // Check the origin of the sender to ensure it matches expectations for security
-            console.log(event.data)
-            const data = event.data
-            if (data === "rail" && this.productAssembler instanceof IntegrationProductAssembler) { this.productAssembler.addOrRemoveRail() }
-            else if (data === "curtain1" && this.productAssembler instanceof IntegrationProductAssembler) { this.productAssembler.changeCurtain(data) }
-            else if (data === "curtain2" && this.productAssembler instanceof IntegrationProductAssembler) { this.productAssembler.changeCurtain(data) }
-            else if (this.productAssembler instanceof IntegrationProductAssembler) this.productAssembler.updateMaterial(data)
-        });
     }
     private async setupConfigurator(product: product) {
-        /*  let dataurl = ""
-         console.log(OdinConfigurator.instance.firebaseStorage)
-         const url = `${product.customer}/Configuration.json`
-         console.log(url)
-         await getDownloadURL(storageRef(OdinConfigurator.instance.firebaseStorage, url)).then((url) => {
-             dataurl = url;
-         })
-        
- 
-         const response = await fetch(dataurl);
-         const configuration = await response.json();
-         console.log(configuration)
-  */
+       /*  let dataurl = ""
+        console.log(OdinConfigurator.instance.firebaseStorage)
+        const url = `${product.customer}/Configuration.json`
+        console.log(url)
+        await getDownloadURL(storageRef(OdinConfigurator.instance.firebaseStorage, url)).then((url) => {
+            dataurl = url;
+        })
+       
+
+        const response = await fetch(dataurl);
+        const configuration = await response.json();
+        console.log(configuration)
+ */
     }
 
 }
-
-
-

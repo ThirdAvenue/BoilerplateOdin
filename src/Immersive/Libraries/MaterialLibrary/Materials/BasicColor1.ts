@@ -14,7 +14,7 @@ export const BasicColor1: MaterialData = {
     // normalMap:''
   },
   properties: {
-    color: 0x0176d3,
+    color: 0xffffff,
   },
 };
 

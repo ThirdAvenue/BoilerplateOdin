@@ -6,12 +6,14 @@ export const Aluminium1: MaterialData = {
     name: 'Aluminium1',
     type: 'MeshPhysicalMaterial',
     properties: {
-        roughness: 0.3,
+        roughness: 0.224,
         metalness: 1,
-        color: 0xffffff,
+        color: 0xa67c00,
         envMap: CubeMapClass.cubeMap,
-        envMapIntensity: 0.5,
+        envMapIntensity: 1,
         transparent: true,
+
+        specularcolor: 0xffdc73,
     },
     size: {
         width: 1,
