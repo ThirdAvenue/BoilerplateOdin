@@ -18,11 +18,11 @@ export class OrbitCamera extends PerspectiveCamera {
     //time in seconds until the rotation starts
     private autoMoveTimer = 25
 
-    constructor(fov: number, private canvas: HTMLCanvasElement, near: number, far: number) {
+    constructor(fov: number, private canvas: HTMLCanvasElement, near: number, far: number,camPos:Vector3,targetPos:Vector3) {
         super(fov, canvas.width / canvas.height, near, far)
         this.controls = new OrbitControls(this, canvas)
         this.controls.zoomSpeed = this.zoomSpeed
-        this.init()
+        this.init(camPos, targetPos)
         this.clock = new Clock()
         this.clock.start()
         this.controls.autoRotateSpeed = -1
@@ -30,14 +30,15 @@ export class OrbitCamera extends PerspectiveCamera {
         this.lastMoveTime = -this.autoMoveTimer
     }
 
-    private init() {
+    private init(camPos:Vector3, targetPos:Vector3) {
+        
         this.controls.enableDamping = true
         this.controls.dampingFactor = 0.1
         this.controls.maxDistance = 11
-        this.controls.enablePan = false
+        this.controls.enablePan = true
         this.controls.rotateSpeed = 0.2
-        this.controls.maxPolarAngle = Math.PI /2.1
-        this.goToOrigin(1)
+        this.controls.maxPolarAngle = Math.PI
+        this.goToOrigin(1,camPos,targetPos)
     }
 
 
@@ -65,8 +66,12 @@ export class OrbitCamera extends PerspectiveCamera {
         this.target = new Vector3()
     }
 
-    public goToOrigin(duration: number) {
-        this.snapto(new Vector3(2, 1.2, 3), new Vector3(0, 1, 0))
+    public goToOrigin(duration: number,campos?:Vector3,targetpos?:Vector3) {
+        if (campos && targetpos) {
+            this.snapto(campos, targetpos)
+
+        }
+        else this.snapto(new Vector3(0, 0.5, 1.6), new Vector3(0, 0.6, 0))
     }
 
     public moveTarget(endPosition: Vector3, target: Vector3, duration: number) {
@@ -99,20 +104,6 @@ export class OrbitCamera extends PerspectiveCamera {
         this.position.set(snapToPos.x * -1, snapToPos.y, snapToPos.z)
         if (lookat) this.controls.target.set(lookat.x * -1, lookat.y, lookat.z)
         this.controls.update()
-    }
-    public moveCameraForArea(axis: Axis, translate: number) {
-        if (axis == 'x') {
-            this.position.set(this.position.x - translate, this.position.y, this.position.z)
-            this.controls.target.set(
-                this.controls.target.x + translate * -1,
-                1,
-                this.controls.target.z
-            )
-        }
-        if (axis == 'z') {
-            this.position.set(this.position.x, this.position.y, this.position.z + translate)
-            this.controls.target.set(this.controls.target.x, 1, this.controls.target.z + translate)
-        }
     }
 
     public zoomIn() {

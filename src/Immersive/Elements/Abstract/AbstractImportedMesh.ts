@@ -9,8 +9,8 @@ export abstract class AbstractImportedMesh extends Mesh {
   private savedMaterial!: Material;
   public override material!: Material;
 
-  constructor(data: MeshData, material: Material, position: Vector3) {
-    super(data.geometry[0]!.clone(), material);
+  constructor(data: MeshData, material: Material, position: Vector3,index:number) {
+    super(data.geometry[index]!.clone(), material);
     this.material = material;
     this.updatePosition(position);
     this.castShadow = true;

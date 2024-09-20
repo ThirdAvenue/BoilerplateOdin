@@ -1,28 +1,36 @@
-import { ImmersiveConfigurator, model } from '../Immersive'
 import { v4 as uuidv4 } from 'uuid'
 import { ProductData } from './MeshData/ProductModel'
 import { IVector3 } from '../Immersive/Elements/IVector3'
+import { OdinConfigurator, model } from '../Immersive'
+import { IntegrationProductAssembler } from './Assemblers/IntegrationProductAssembler'
 import { ModuleProductAssembler } from './Assemblers/ModuleProductAssembler'
-
-const assembler = new ModuleProductAssembler()
-const configurator = new ImmersiveConfigurator()
 export type product = model & {
-    company: string
+    customer: string
     model: string
     rotation: number
     position: IVector3
 }
+type configuratorType = 'Configurator' | 'Integration' | 'Custom'
 
-const demoProduct: product = {
-    id: uuidv4(),
-    version: 1.0,
-    company:'Demo',
-    model: 'CoverChair',
-    rotation:0,
-    position:{x:0,y:0,z:0}
-      
+const configurator = new OdinConfigurator()
+// get Url 
+const currentUrl = window.location.href;
+const urlParams = new URLSearchParams(new URL(currentUrl).search);
+//for debug:  http://localhost:8080/?productID=12345
+const productId = urlParams.get('productID');
+
+if (productId) {
+    configurator.init(new ModuleProductAssembler(), productId, '.canvasWindow', ProductData)
 }
 
-configurator.init(assembler, demoProduct, '.canvasWindow', ProductData)
-configurator.renderer.scene.addProduct(assembler.object)
+//buttons 
 
+document.addEventListener('DOMContentLoaded', (event) => {
+    var myButton = document.getElementById('myButton');
+    if (myButton != null) {
+        myButton.addEventListener('click', function () {
+
+        });
+    }
+}
+);

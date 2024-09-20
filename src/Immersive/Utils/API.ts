@@ -1,4 +1,4 @@
-import { ImmersiveConfigurator } from '..'
+import { OdinConfigurator } from '..'
 import { product } from '../../product/productX'
 
 export function apiCall(product: product) {

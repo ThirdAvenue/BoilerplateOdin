@@ -1,6 +1,6 @@
 import { Box3, BufferGeometry, Color, EdgesGeometry, Group, LineBasicMaterial, LineSegments, Mesh, Object3D, Vector3 } from 'three'
 import { model } from './models'
-import { ImmersiveConfigurator } from '../ImmersiveConfigurator'
+import { OdinConfigurator } from '../OdinConfigurator'
 type paramsValue = 'width' | 'height' | 'depth'
 
 export abstract class AbstractProductAssembler {
@@ -13,7 +13,7 @@ export abstract class AbstractProductAssembler {
         return this._wireframe
     }
 
-    public abstract generateProduct(product: model): void
+     public  abstract  generateProduct(product: model): void
     public abstract updateProduct(product: model): void
     public destroyAssembler(): void {
         this._object.clear()
@@ -40,12 +40,12 @@ export abstract class AbstractProductAssembler {
     }
     public buildWireFrame(object: Object3D, color = 'Black') {
         this._wireframe.clear()
-        if (!ImmersiveConfigurator.instance.showWireFrame) return
+        if (!OdinConfigurator.instance.showWireFrame) return
         const objectToWireFrame: BufferGeometry[] = []
         const wireColor = new Color(color)
         const material = new LineBasicMaterial({
             color: wireColor,
-            linewidth: 50,
+            linewidth: 30,
             precision: 'highp',
             polygonOffset: true,
             polygonOffsetFactor: 0.3,
@@ -54,7 +54,7 @@ export abstract class AbstractProductAssembler {
         if (object instanceof Mesh) {
             const geometry = new EdgesGeometry(object.geometry)
             const wireframeObject = new LineSegments(geometry, material)
-            wireframeObject.layers.set(3)
+            wireframeObject.layers.set(0)
             object.getWorldPosition(position)
             objectToWireFrame.push(object.geometry)
             wireframeObject.rotation.set(object.rotation.x, object.rotation.y, object.rotation.z)
@@ -67,7 +67,7 @@ export abstract class AbstractProductAssembler {
                 if (child instanceof Mesh) {
                     const geometry = new EdgesGeometry(child.geometry)
                     const wireframeObject = new LineSegments(geometry, material)
-                    wireframeObject.layers.set(3)
+                    wireframeObject.layers.set(0)
                     child.getWorldPosition(position)
                     objectToWireFrame.push(child.geometry)
                     wireframeObject.rotation.set(
@@ -82,7 +82,6 @@ export abstract class AbstractProductAssembler {
             }
         }
         this.object.add(this.wireframe)
-        console.log(this.object)
     }
     
 }
