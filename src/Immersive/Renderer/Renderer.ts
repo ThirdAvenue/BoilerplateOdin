@@ -154,7 +154,8 @@ export class Renderer {
 
     }
     private async cameraSetup(clientWidth: number, clientHeight: number,cameraSettings:Array<any>) {
-/* 
+        debugger
+/*  
         if (OdinConfigurator.instance.productAssembler) {
             const camera = await OdinConfigurator.instance.productAssembler.object.traverse((child) => {
                 if (child instanceof Camera) {
