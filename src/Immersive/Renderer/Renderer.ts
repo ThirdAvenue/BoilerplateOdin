@@ -154,7 +154,8 @@ export class Renderer {
 
     }
     private async cameraSetup(clientWidth: number, clientHeight: number,cameraSettings:Array<any>) {
-
+        Renderer._camera = new PerspectiveCamera(75, clientWidth / clientHeight, 0.1, 1000)
+/* 
         if (OdinConfigurator.instance.productAssembler) {
             const camera = await OdinConfigurator.instance.productAssembler.object.traverse((child) => {
                 if (child instanceof Camera) {
@@ -166,7 +167,7 @@ export class Renderer {
                 Renderer._camera.updateProjectionMatrix()
 
             }
-        }
+        } */
         const CamPos = new Vector3(cameraSettings[0].xCam, cameraSettings[0].yCam, cameraSettings[0].zCam)
         const TargetPos = new Vector3(cameraSettings[0].xLook, cameraSettings[0].yLook, cameraSettings[0].zLook)
 
