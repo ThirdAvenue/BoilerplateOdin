@@ -7,6 +7,7 @@ import { ModuleProductAssembler } from './Assemblers/ModuleProductAssembler'
 const assembler = new ModuleProductAssembler()
 const configurator = new ImmersiveConfigurator()
 export type product = model & {
+    company: string
     model: string
     rotation: number
     position: IVector3
@@ -15,6 +16,7 @@ export type product = model & {
 const demoProduct: product = {
     id: uuidv4(),
     version: 1.0,
+    company:'Demo',
     model: 'CoverChair',
     rotation:0,
     position:{x:0,y:0,z:0}
