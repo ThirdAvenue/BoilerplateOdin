@@ -80,7 +80,7 @@ export class ModuleProductAssembler extends AbstractProductAssembler {
                 }
                 if (model.name === 'tree') {
                     model.castShadow = true
-                    const alphamap = '/Assets/tree.png'
+                    const alphamap = ''
                     const alphaTexture = new TextureLoader().load(alphamap)
                     material!.alphaMap = alphaTexture
                     material!.alphaTest = 0.4

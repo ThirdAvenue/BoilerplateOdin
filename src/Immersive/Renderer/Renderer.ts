@@ -144,6 +144,7 @@ export class Renderer {
     public onWindowResize() {
         const clientWidth = OdinConfigurator.instance.canvas.clientWidth
         const clientHeight = OdinConfigurator.instance.canvas.clientHeight
+        console.log(clientWidth, clientHeight)
         OdinConfigurator.instance.renderer._renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
         OdinConfigurator.instance.renderer._renderer.setSize(clientWidth, clientHeight)
         Renderer._camera.aspect = clientWidth / clientHeight;
